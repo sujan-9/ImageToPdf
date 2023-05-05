@@ -1,23 +1,6 @@
 
 import 'dart:io';
 
-// class ImageModel {
-//   final File imagefile;
-
-//   ImageModel(
-//     this.imagefile,
-//   );
-
-//   ImageModel copyWith({
-//     File? imagefile,
-//   }) {
-//     return ImageModel(
-//       imagefile ?? this.imagefile,
-//     );
-//   }
-
-// }
-
 class ImageModel {
   final String path;
    final File imagefile;

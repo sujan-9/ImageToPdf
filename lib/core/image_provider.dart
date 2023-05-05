@@ -56,11 +56,13 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         for (var pickedFile in pickedFiles) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
+         
+          
           selectedImages.add(ImageModel(file.path, name, file));
         }
         //state = List.from(selectedImages);
         state = [...state, ...selectedImages];
-      selectedImages.clear(); 
+      // selectedImages.clear(); 
        
       // }
     } on Exception catch (e) {
@@ -76,6 +78,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
   //remove image to do
   void removeAllImages() {
+     
   state = [];
 }
 
