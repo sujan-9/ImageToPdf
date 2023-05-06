@@ -4,12 +4,19 @@ import 'package:imagetopdf/feature/editscreen/editscreen.dart';
 
 import '../../core/image_provider.dart';
 
+import '../../pdfview.dart';
+
+
 class SelectSource extends ConsumerWidget {
   const SelectSource({super.key});
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final opt = ref.watch(imgNotifierProvider.notifier);
+    
+  
+
+   //final opt = ref.watch(imgNotifierProvider.notifier).selectedImages;
     return Scaffold(
       body: Center(
         child: Column(
@@ -18,7 +25,7 @@ class SelectSource extends ConsumerWidget {
           TextButton(onPressed: (){
             //opt.pickImagesFromGallery();
             ref.read(imgNotifierProvider.notifier).pickImagesFromGallery();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => EditScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const EditScreen()));
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue),
@@ -33,7 +40,24 @@ class SelectSource extends ConsumerWidget {
           ),
            child: const Text("Gallery")),
            const  TextButton(onPressed: null,
-           child: Text("Camera"))
+           child: Text("Camera")),
+           TextButton(onPressed: (){
+            //opt.pickImagesFromGallery();
+            //ref.read(imgNotifierProvider.notifier).();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const PdfViewerScreen()));
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: const BorderSide(color: Colors.blue)
+              )
+            )
+          
+          ),
+           child: const Text("saved pdf")),
         ],),
       ),
     );

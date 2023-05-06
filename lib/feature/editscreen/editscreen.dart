@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/image_provider.dart';
+import '../../pdfview.dart';
 
 class EditScreen extends ConsumerWidget {
   const EditScreen({Key? key}) : super(key: key);
@@ -27,6 +28,9 @@ class EditScreen extends ConsumerWidget {
           TextButton(
             onPressed: () {
               ref.read(imgNotifierProvider.notifier).createPdf();
+              
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerScreen(path: )));
+               Navigator.pop(context);
             },
             child: const Text("SAVE"),
           )

@@ -11,10 +11,12 @@ class BottomBar extends ConsumerWidget {
   const Center(child:  Text('page2')),
    const Center(child:  Text('page3')),
   ];
+  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var navindex = ref.watch(navProvider).index;
+    
     return Scaffold(
       body: _widgetOptions.elementAt(navindex),
       bottomNavigationBar: BottomNavigationBar(
