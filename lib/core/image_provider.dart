@@ -5,12 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../model/image_model.dart';
+import '../model/pdf.dart';
 
 
 
 final imgNotifierProvider = StateNotifierProvider<ImgNotifier, List<ImageModel>>((ref) => ImgNotifier());
 
-final pdfPathProvider = StateProvider<String>((ref) => '');
+//final pdfPathProvider = StateProvider<String>((ref) => '');
 
 class ImgNotifier extends StateNotifier<List<ImageModel>> {
   ImgNotifier() : super([]);
@@ -34,10 +35,10 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
       state = [...state, ...selectedImages];
     } on Exception catch (e) {
-      print('Error picking images: $e');
+      throw('Error picking images: $e');
     }
   } else if (status.isDenied){
-    print('Permission denied');
+    throw('Permission denied');
   }
   else if (status.isPermanentlyDenied){
     openAppSettings();
@@ -57,7 +58,18 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
   state = [];
 }
 
+void reorderImages(int oldIndex, int newIndex) {
+  if (oldIndex < newIndex) {
+    newIndex -= 1;
+  }
+
+  final ImageModel item = state.removeAt(oldIndex);
+  state.insert(newIndex, item);
+}
+
+
   Future<void> createPdf() async {
+    PdfModel  path = PdfModel();
     final status = await 
     Permission.storage.request();
     if (status.isGranted){
@@ -82,10 +94,11 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         ),
       );
     }
-   const String name = 'file';
-     var createPath = await _createFolder("ImageToPdfConverter");
-     File savePath = File(createPath + "$name.pdf");
-     print(savePath);
+    
+    var fileName = path.file();
+     var createPath = await path.createFolder("ImageToPdfConverter");
+     File savePath = File(createPath + "$fileName.pdf");
+    
     
     await savePath.writeAsBytes(await pdf.save());
   
@@ -99,14 +112,14 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
      
     state = [];
    
-    print('PDF created at $savePath');
+    
 
     // Do something with the PDF file, like opening it in a PDF viewer
     // or sharing it with another app
      
   }
   else if (status.isDenied){
-    print('denied');
+    throw('denied');
   }
   else if ( status.isPermanentlyDenied){
     openAppSettings();
@@ -117,25 +130,25 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
   
 
- Future<String> _createFolder(String folderName) async {
-    //Get this App Document Directory
-    final Directory appDocDir = Directory("storage/emulated/0");
-    //App Document Directory + folder name
-    final Directory appDocDirFolder =
-        Directory('${appDocDir.path}/$folderName/');
+//  Future<String> _createFolder(String folderName) async {
+//     //Get this App Document Directory
+//     final Directory appDocDir = Directory("storage/emulated/0");
+//     //App Document Directory + folder name
+//     final Directory appDocDirFolder =
+//         Directory('${appDocDir.path}/$folderName/');
 
-    if (await appDocDirFolder.exists()) {
-      //if folder already exists return path
-      return appDocDirFolder.path;
-    } else {
-      //if folder not exists create folder and then return its path
-      final Directory appDocDirNewFolder =
-          await appDocDirFolder.create(recursive: true);
-      return appDocDirNewFolder.path;
-    }
-  }
+//     if (await appDocDirFolder.exists()) {
+//       //if folder already exists return path
+//       return appDocDirFolder.path;
+//     } else {
+//       //if folder not exists create folder and then return its path
+//       final Directory appDocDirNewFolder =
+//           await appDocDirFolder.create(recursive: true);
+//       return appDocDirNewFolder.path;
+//     }
+//   }
 
-  
+
 // Future<String> _createFolder(String folderName) async {
 //   // Request permission
 //   final status = await Permission.manageExternalStorage.request();

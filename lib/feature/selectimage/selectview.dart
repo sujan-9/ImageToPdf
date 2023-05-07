@@ -4,7 +4,7 @@ import 'package:imagetopdf/feature/editscreen/editscreen.dart';
 
 import '../../core/image_provider.dart';
 
-import '../../pdfview.dart';
+
 
 
 class SelectSource extends ConsumerWidget {
@@ -44,7 +44,7 @@ class SelectSource extends ConsumerWidget {
            TextButton(onPressed: (){
             //opt.pickImagesFromGallery();
             //ref.read(imgNotifierProvider.notifier).();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const PdfViewerScreen()));
+           // Navigator.push(context, MaterialPageRoute(builder: (context) =>  PdfViewerScreen(path: path,)));
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue),

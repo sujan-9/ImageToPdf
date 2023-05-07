@@ -3,13 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:imagetopdf/feature/bottombar/provider.dart';
 import 'package:imagetopdf/feature/homepage/homescreen.dart';
 
+import '../selectimage/selectview.dart';
+import '../setting/lpdf_list.dart';
+
 class BottomBar extends ConsumerWidget {
   const BottomBar({super.key});
 
   static final List<Widget> _widgetOptions = <Widget>[
   const Homepage(),
-  const Center(child:  Text('page2')),
-   const Center(child:  Text('page3')),
+  const SelectSource(),
+   const PDFList(),
   ];
   
 
