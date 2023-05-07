@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
-import '../../pdfview.dart';
+
 
 class EditScreen extends ConsumerWidget {
   const EditScreen({Key? key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final img = ref.watch(imgNotifierProvider);
+    void pdf ()async{
+       final status = await Permission.manageExternalStorage.request();
+    if (status.isGranted) {
+      ref.read(imgNotifierProvider.notifier).createPdf();
+    }
+    else if (status.isDenied){
+      print('Permission denied');
+    }
+    else if (status.isPermanentlyDenied){
+      openAppSettings();
+
+    }}
      
     return Scaffold(
       backgroundColor: Colors.black38,
@@ -27,7 +41,8 @@ class EditScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () {
-              ref.read(imgNotifierProvider.notifier).createPdf();
+              pdf();
+              // ref.read(imgNotifierProvider.notifier).createPdf();
               
               // Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerScreen(path: )));
                Navigator.pop(context);

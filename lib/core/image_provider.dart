@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -83,21 +82,24 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         ),
       );
     }
-
-   // final output = await getTemporaryDirectory();
-     final String dir = (await getApplicationDocumentsDirectory()).path;
-    // final fileName = '${selectedImages.join(', ')}';
-   // final file = File("${output!.path}/images + 'converter'.pdf");
-     final file = File("$dir/images + 'converter'.pdf");
-     print(file);
+   const String name = 'file';
+     var createPath = await _createFolder("ImageToPdfConverter");
+     File savePath = File(createPath + "$name.pdf");
+     print(savePath);
     
-    await file.writeAsBytes(await pdf.save());
-    // await HiveHelper().storePdfFile(file);
+    await savePath.writeAsBytes(await pdf.save());
+  
+
+  // var _createPath = await _createFolder("ImageToPdfConverter");
+  //   File _savePath = File(_createPath + "$fileName.pdf");
+  //   final pdfSaveByte = await pdf.save();
+  //   final savePDFfile = _savePath.writeAsBytes(pdfSaveByte);
+  //  return savePDFfile;
     
      
     state = [];
    
-    print('PDF created at $file');
+    print('PDF created at $savePath');
 
     // Do something with the PDF file, like opening it in a PDF viewer
     // or sharing it with another app
@@ -113,9 +115,52 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
 
 
-  // Future<File?> getSavedPdf() async {
-  //   return await HiveHelper().getPdfFile();
-    
- // }
+  
+
+ Future<String> _createFolder(String folderName) async {
+    //Get this App Document Directory
+    final Directory appDocDir = Directory("storage/emulated/0");
+    //App Document Directory + folder name
+    final Directory appDocDirFolder =
+        Directory('${appDocDir.path}/$folderName/');
+
+    if (await appDocDirFolder.exists()) {
+      //if folder already exists return path
+      return appDocDirFolder.path;
+    } else {
+      //if folder not exists create folder and then return its path
+      final Directory appDocDirNewFolder =
+          await appDocDirFolder.create(recursive: true);
+      return appDocDirNewFolder.path;
+    }
+  }
+
+  
+// Future<String> _createFolder(String folderName) async {
+//   // Request permission
+//   final status = await Permission.manageExternalStorage.request();
+//   if (!status.isGranted) {
+//     throw Exception('Permission denied');
+//   }
+
+//   // Get app document directory
+//   final Directory appDocDir = Directory("storage/emulated/0");
+
+//   // Combine app document directory path with folder name
+//   final Directory appDocDirFolder = Directory('${appDocDir.path}/$folderName/');
+
+//   // If the folder doesn't exist, create it
+//   if (!await appDocDirFolder.exists()) {
+//     try {
+//       await appDocDirFolder.create(recursive: true);
+//     } catch (e) {
+//       throw Exception('Failed to create folder: $e');
+//     }
+//   }
+
+//   // Return the path to the folder
+//   return appDocDirFolder.path;
+// }
+
     }
 
