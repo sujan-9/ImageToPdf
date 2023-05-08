@@ -25,7 +25,7 @@ class SelectSource extends ConsumerWidget {
           TextButton(onPressed: (){
             //opt.pickImagesFromGallery();
             ref.read(imgNotifierProvider.notifier).pickImagesFromGallery();
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const EditScreen()));
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue),

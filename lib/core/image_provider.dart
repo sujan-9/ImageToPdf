@@ -97,7 +97,7 @@ void reorderImages(int oldIndex, int newIndex) {
     
     var fileName = path.file();
      var createPath = await path.createFolder("ImageToPdfConverter");
-     File savePath = File(createPath + "$fileName.pdf");
+     File savePath = File("$createPath$fileName.pdf");
     
     
     await savePath.writeAsBytes(await pdf.save());

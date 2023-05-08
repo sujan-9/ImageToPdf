@@ -8,7 +8,7 @@ import '../preview/preview.dart';
 
 
 class EditScreen extends ConsumerWidget {
-   EditScreen({Key? key}) : super(key: key);
+  const EditScreen({Key? key}) : super(key: key);
   
   
 
@@ -49,7 +49,7 @@ class EditScreen extends ConsumerWidget {
               
               // ref.read(imgNotifierProvider.notifier).createPdf();
               
-               Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewPage( )));
+               Navigator.push(context, MaterialPageRoute(builder: (context) =>const PreviewPage( )));
               // Navigator.pop(context);
             },
             child: const Text("PreviewPage"),
@@ -59,7 +59,7 @@ class EditScreen extends ConsumerWidget {
               pdf();
               // ref.read(imgNotifierProvider.notifier).createPdf();
               
-               Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewerScreen( )));
+               Navigator.push(context, MaterialPageRoute(builder: (context) =>const PdfViewerScreen( )));
               // Navigator.pop(context);
             },
             child: const Text("SAVE"),

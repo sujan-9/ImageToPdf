@@ -1,6 +1,6 @@
 
 
-import 'dart:io';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -12,7 +12,7 @@ import 'model/pdf.dart';
 class PdfViewerScreen extends StatelessWidget {
  
 
-  PdfViewerScreen({Key? key}) : super(key: key);
+  const PdfViewerScreen({Key? key}) : super(key: key);
 
  
 
@@ -21,14 +21,14 @@ class PdfViewerScreen extends StatelessWidget {
    PdfModel path = PdfModel();
    var path1 = path.createFolder('ImageToPdfConverter').toString();
    var finename = path.file().toString();
-   print('$path1$finename.pdf');
+   //print('$path1$finename.pdf');
    
     
     
     return Scaffold(
       appBar: AppBar(title: Text('$path1$finename.pdf'),),
       body: PDFView(
-        filePath:  '$path1$finename.pdf',
+        filePath:  path1,
         fitEachPage: true,
         pageSnap: true,
         swipeHorizontal: true,

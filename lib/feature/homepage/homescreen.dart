@@ -12,8 +12,8 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+   // final height = MediaQuery.of(context).size.height;
+   // final width = MediaQuery.of(context).size.width;
     return  WillPopScope(
       onWillPop: () async => true,
       child: SafeArea(
