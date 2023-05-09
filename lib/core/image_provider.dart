@@ -49,7 +49,10 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
   //remove single image from the list
   void removeImage(ImageModel image) {
+    
   state = state.where((img) => img.path != image.path).toList();
+  selectedImages.remove(image);
+  
 }
 
   //remove image to do

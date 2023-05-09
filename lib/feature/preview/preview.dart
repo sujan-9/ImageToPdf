@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:imagetopdf/model/image_model.dart';
 
-import '../../core/image_provider.dart';
+//import '../../core/image_provider.dart';
 
+
+// ignore: must_be_immutable
 class PreviewPage extends ConsumerWidget {
-  const PreviewPage({super.key});
+  List<File> fileImageArray = [];
+   PreviewPage({Key? key, required this.fileImageArray}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final options = ref.watch(imgNotifierProvider.notifier).selectedImages;
-    List<File> fileImageArray = options.map((e) => File(e.path)).toList();
+    // final options = ref.read(imgNotifierProvider.notifier).selectedImages;
+    // List<File> fileImageArray = options.map((e) => File(e.path)).toList();
+    //print('preview $fileImageArray.length');
 
    return Scaffold(
       appBar: AppBar(
@@ -20,7 +24,7 @@ class PreviewPage extends ConsumerWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-           
+          
           Navigator.pop(context);
           
           },
@@ -40,7 +44,7 @@ class PreviewPage extends ConsumerWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: fileImageArray.length,
                 itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 7),
+                  padding: const EdgeInsets.symmetric(horizontal: 3,vertical: 2),
                   child:  Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

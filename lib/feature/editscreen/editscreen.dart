@@ -1,17 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:imagetopdf/feature/homepage/homescreen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
-import '../../pdfview.dart';
+
+import '../bottombar/bootombar.dart';
 import '../preview/preview.dart';
 
 
+// ignore: must_be_immutable
 class EditScreen extends ConsumerWidget {
-  const EditScreen({Key? key}) : super(key: key);
+   EditScreen({Key? key}) : super(key: key);
   
   
-
+List<File> fileImageArray = [];
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final img = ref.watch(imgNotifierProvider);
@@ -48,8 +53,11 @@ class EditScreen extends ConsumerWidget {
             onPressed: () {
               
               // ref.read(imgNotifierProvider.notifier).createPdf();
+              fileImageArray = img.map((e) => File(e.path)).toList();
               
-               Navigator.push(context, MaterialPageRoute(builder: (context) =>const PreviewPage( )));
+              
+               Navigator.push(context, MaterialPageRoute(builder:
+                (context) => PreviewPage( fileImageArray: fileImageArray,)));
               // Navigator.pop(context);
             },
             child: const Text("PreviewPage"),
@@ -58,8 +66,14 @@ class EditScreen extends ConsumerWidget {
             onPressed: () {
               pdf();
               // ref.read(imgNotifierProvider.notifier).createPdf();
+               const Duration(seconds: 2);
               
-               Navigator.push(context, MaterialPageRoute(builder: (context) =>const PdfViewerScreen( )));
+             const  SnackBar(
+                content: Text('Pdf has beed saved') ,
+                 duration:  Duration(seconds: 2),
+                  behavior: SnackBarBehavior.floating);
+                 
+               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const BottomBar( )));
               // Navigator.pop(context);
             },
             child: const Text("SAVE"),
@@ -79,27 +93,35 @@ class EditScreen extends ConsumerWidget {
                   itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 7),
-                        child: Stack(
-                          children: [
-                            Image.file(
-                              img[index].imagefile,
-                              fit: BoxFit.fill,
-                            ),
-                            Positioned(
-                              top: 2,
-                              right: 2,
-                              child: IconButton(
-                                onPressed: () {
-                                  ref.read(imgNotifierProvider.notifier).removeImage(img[index]);
-                                },
-                                icon: const Icon(
-                                  Icons.cancel,
-                                  color: Colors.red,
-                                  size: 40,
-                                ),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.95,
+                          width: MediaQuery.of(context).size.width * 0.95,
+
+                          child: Stack(
+                            children: [
+                              Image.file(
+                                img[index].imagefile,
+                                fit: BoxFit.fill,
                               ),
-                            )
-                          ],
+                              Positioned(
+                                top: 2,
+                                right: 2,
+                                child: IconButton(
+                                  onPressed: () {
+                                   ref.read(imgNotifierProvider.notifier).removeImage(img[index]);
+                                    if (fileImageArray.isEmpty) {
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const BottomBar( )));
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
+                                    size: 40,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       )),
             ),

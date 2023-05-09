@@ -33,9 +33,10 @@ class BottomBar extends ConsumerWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.image), label: 'Image'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Pdf'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
         ],
       )
     );
   }
+  
 }
