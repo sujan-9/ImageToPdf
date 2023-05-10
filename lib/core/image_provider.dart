@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/image_model.dart';
 import '../model/pdf.dart';
@@ -18,6 +19,41 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
   List<ImageModel> selectedImages = [];
 
+  // Future<void> pickImagesFromCamera()async {
+  //   final status = await Permission.camera.request();
+
+  // if (status.isGranted) {
+  //   try {
+  //     final pickedFile = await ImagePicker().pickImage
+  //     (source: ImageSource.camera,
+  //     imageQuality: 100,
+  //     preferredCameraDevice: CameraDevice.rear,
+  //     );
+
+  //     if (pickedFile != null) {
+  //       final file = File(pickedFile.path);
+  //       final name = pickedFile.name;
+  //       selectedImages.add(ImageModel(file.path, name, file));
+        
+  //     }
+
+  //     state = [...state, ...selectedImages];
+      
+  //   } on Exception catch (e) {
+  //     throw('Error picking images: $e');
+  //   }
+  // } else if (status.isDenied){
+  //   throw('Permission denied');
+  // }
+  // else if (status.isPermanentlyDenied){
+  //   openAppSettings();
+
+  // }
+
+  // }
+
+
+
   Future<void> pickImagesFromGallery() async {
  final status = await 
     Permission.storage.request();
@@ -31,6 +67,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         final name = pickedFile.name;
          
         selectedImages.add(ImageModel(file.path, name, file));
+        
       }
 
       state = [...state, ...selectedImages];
@@ -101,7 +138,7 @@ void reorderImages(int oldIndex, int newIndex) {
     var fileName = path.file();
      var createPath = await path.createFolder("ImageToPdfConverter");
      File savePath = File("$createPath$fileName.pdf");
-    
+   
     
     await savePath.writeAsBytes(await pdf.save());
   
@@ -114,6 +151,8 @@ void reorderImages(int oldIndex, int newIndex) {
     
      
     state = [];
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('path', savePath.path);
    
     
 
@@ -180,3 +219,4 @@ void reorderImages(int oldIndex, int newIndex) {
 
     }
 
+ 

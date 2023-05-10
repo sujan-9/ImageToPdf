@@ -1,15 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../core/image_provider.dart';
+import '../editscreen/editscreen.dart';
 
 
 
-class Homepage extends StatefulWidget {
+class Homepage extends ConsumerStatefulWidget {
   const Homepage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  ConsumerState<ConsumerStatefulWidget>  createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends ConsumerState<Homepage> {
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+        
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+             const  Text('Chosse one option',style: TextStyle(
+                fontSize: 15,
+                //fontWeight: FontWeight.bold,
+                
+                ),),
+               const  SizedBox(height: 20,),
+               TextButton(
+             
+             onPressed: (){
+               // ref.read(imgNotifierProvider.notifier).pickImagesFromCamera();
+                 Navigator.of(context).pop();
+               
+
+             },
+              child: const Text('Camera',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                
+                ),),
+              
+            ),
+             TextButton(
+              onPressed: (){
+               
+                 ref.read(imgNotifierProvider.notifier).pickImagesFromGallery();
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  EditScreen()));
+            //      if (ref.read(imgNotifierProvider.notifier).selectedImages.isNotEmpty) {
+            //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditScreen()));}
+            //  else{
+            //     Navigator.of(context).pop();
+            //  }
+              },
+              child: const Text('Gallery',style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                
+                ),),
+              
+            ),
+
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Close'),
+              
+            ),
+           
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
    // final height = MediaQuery.of(context).size.height;
@@ -22,60 +91,36 @@ class _HomepageState extends State<Homepage> {
           body:Column(
             mainAxisAlignment: MainAxisAlignment.center,
            crossAxisAlignment: CrossAxisAlignment.center,
-            children:  const [
-                        Center(child: Text("Image")),
-                        Text("No image is Selected"),
-                        Text("Select an image to start editing"),
+            children:   [
+                        const Center(child: Text("Image")),
+                       const Text("No image is Selected"),
+                        const Text("Select an image to start editing"),
+                        const SizedBox(height: 20,),
+                        TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.red),
+                            foregroundColor: MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(color: Colors.purple)
+                              )
+                            )
+                          
+                          ),
+                          onPressed: () {
+                            _showDialog();},
+                           child: const Text('Select Images',
+                           style: TextStyle(
+                             color: Colors.black,
+                             fontSize: 20,
+                             fontWeight: FontWeight.bold,
+                           ),
+                           
+                           ))
 
                         
-                //  Container(
-                //       height:height*0.093,
-                //      // width: 30,
-                //      margin: const EdgeInsets.all(7),
-                //       decoration: BoxDecoration(
-                //         color: Colors.white,
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //       child: Row(
-                //         children:[
-                //           TextButton(
-                //             onPressed: (){
-                //             //   if (options.isEmpty){
-                //             //    return null;
-                //             //   }else{
-                //             // Navigator.push(context, MaterialPageRoute(builder: (context) => Converter()));
-                //             //   }
-                             
-                //              },
-                //            child: const Text("Edit",
-                //            style: TextStyle(
-                //               color: Colors.black,
-                //               fontSize: 20,
-                //               fontWeight: FontWeight.bold,
-                //             ),
-                //             )
-                //             ),
-                //             SizedBox(width: width*0.35,),
-                //            const TextButton(
-                //               onPressed: null,
-                //            child: Text("Save",
-                //            style: TextStyle(
-                //               color: Colors.black,
-                //               fontSize: 20,
-                //               fontWeight: FontWeight.bold,
-                //             ),
-                //             )
-                //             ),
-                //             IconButton(
-                //           onPressed: (){
-                           
-                //           },  icon:const Icon(Icons.more_vert))
-                           
-                //         ]
-                //       ),
-                //     ),
-                    
-                    //body for images
+                
       
                     
       
@@ -87,4 +132,5 @@ class _HomepageState extends State<Homepage> {
       ),
     );
   }
+ 
 }

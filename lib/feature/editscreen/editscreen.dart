@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:imagetopdf/feature/homepage/homescreen.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
 
+import '../../widgets/widgets.dart';
 import '../bottombar/bootombar.dart';
 import '../preview/preview.dart';
 
@@ -17,10 +18,12 @@ class EditScreen extends ConsumerWidget {
   
   
 List<File> fileImageArray = [];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final img = ref.watch(imgNotifierProvider);
     //final path = ref.watch (imgNotifierProvider.notifier).path;
+   // print(fileImageArray.length);
     void pdf ()async{
        final status = await Permission.manageExternalStorage.request();
     if (status.isGranted) {
@@ -41,9 +44,11 @@ List<File> fileImageArray = [];
         title: const Text("Edit Image"),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
-           // img.clear();
-            ref.read(imgNotifierProvider.notifier).removeImage;
+           
+          // img.clear();
+           // ref.read(imgNotifierProvider.notifier).removeAllImages;
+           // fileImageArray.clear();
+             Navigator.pop(context);
             
           },
           icon: const Icon(Icons.arrow_back_ios),
@@ -66,12 +71,13 @@ List<File> fileImageArray = [];
             onPressed: () {
               pdf();
               // ref.read(imgNotifierProvider.notifier).createPdf();
-               const Duration(seconds: 2);
               
-             const  SnackBar(
-                content: Text('Pdf has beed saved') ,
-                 duration:  Duration(seconds: 2),
-                  behavior: SnackBarBehavior.floating);
+              snackbar(context, 'Pdf has beed saved');
+               const Duration(seconds: 2);
+              // print('Pdf has beed saved');
+               
+            
+             //snacckbar
                  
                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const BottomBar( )));
               // Navigator.pop(context);
@@ -109,9 +115,16 @@ List<File> fileImageArray = [];
                                 child: IconButton(
                                   onPressed: () {
                                    ref.read(imgNotifierProvider.notifier).removeImage(img[index]);
-                                    if (fileImageArray.isEmpty) {
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const BottomBar( )));
-                                    }
+                                  
+                                   
+                                   if(img.length==1){
+                                  const  Text('no images is selected',
+                                  style: TextStyle(color: Colors.white),);
+                                   }
+                                   
+                                    // if (ref.read(imgNotifierProvider.notifier).selectedImages==null) {
+                                    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const BottomBar( )));
+                                    // }
                                   },
                                   icon: const Icon(
                                     Icons.cancel,

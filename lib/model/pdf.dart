@@ -4,8 +4,9 @@ import 'dart:math';
 
 class PdfModel {
 
+  
   String file (){
-  String  name ='PpfFile${Random().nextInt(100000)}';
+  String  name ='PDF-File${Random().nextInt(100000)}';
     return name;
 
   }
