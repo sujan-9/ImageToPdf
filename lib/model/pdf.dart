@@ -2,6 +2,13 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+
+final pdfPathProvider = Provider((ref) => PdfModel().createFolder(''));
+
 class PdfModel {
 
   
@@ -18,6 +25,9 @@ class PdfModel {
     //App Document Directory + folder name
     final Directory appDocDirFolder =
         Directory('${appDocDir.path}/$folderName/');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('path', appDocDirFolder.path);
+   
 
     if (await appDocDirFolder.exists()) {
       //if folder already exists return path

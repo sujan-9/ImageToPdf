@@ -43,3 +43,30 @@ import 'package:flutter/material.dart';
 //     ),
 //   );
 //}
+
+
+dilogbox(){
+ 
+ var namecontroller = TextEditingController();
+  return AlertDialog(
+    title: const Text('Write file name'),
+    
+    actions:  [
+      TextField(
+        controller: namecontroller,
+        decoration:  const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'File name',
+        ),
+        onSubmitted: (value) => namecontroller.text = value,
+      ),
+      TextButton(
+        onPressed: () {
+         
+         },
+        child: const Text('Yes'),
+      ),
+    ],
+  );
+
+}

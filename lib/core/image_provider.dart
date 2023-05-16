@@ -18,6 +18,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
   ImgNotifier() : super([]);
 
   List<ImageModel> selectedImages = [];
+  
 
   // Future<void> pickImagesFromCamera()async {
   //   final status = await Permission.camera.request();
@@ -138,6 +139,7 @@ void reorderImages(int oldIndex, int newIndex) {
     var fileName = path.file();
      var createPath = await path.createFolder("ImageToPdfConverter");
      File savePath = File("$createPath$fileName.pdf");
+    
    
     
     await savePath.writeAsBytes(await pdf.save());
@@ -151,9 +153,7 @@ void reorderImages(int oldIndex, int newIndex) {
     
      
     state = [];
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('path', savePath.path);
-   
+    
     
 
     // Do something with the PDF file, like opening it in a PDF viewer
