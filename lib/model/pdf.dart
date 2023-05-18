@@ -8,16 +8,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 final pdfPathProvider = Provider((ref) => PdfModel().createFolder(''));
+final filenameProvider = StateProvider<String>((ref) => PdfModel().file());
+//final renameFileProvider = StateProvider<String>((ref) => '');
+
+  
 
 class PdfModel {
 
   
   String file (){
+   
   String  name ='PDF-File${Random().nextInt(100000)}';
+ 
     return name;
 
   }
 
+  
 
   Future<String> createFolder(String folderName) async {
     //Get this App Document Directory

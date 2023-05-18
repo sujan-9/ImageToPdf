@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
+
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../model/image_model.dart';
 import '../model/pdf.dart';
@@ -109,10 +111,14 @@ void reorderImages(int oldIndex, int newIndex) {
 }
 
 
-  Future<void> createPdf() async {
+  Future<void> createPdf(
+   // String fileName,
+  ) async {
     PdfModel  path = PdfModel();
     final status = await 
     Permission.storage.request();
+    // BuildContext context;
+    // WidgetRef ref = this.context;
     if (status.isGranted){
       if (state.isEmpty) {
       return;
@@ -137,19 +143,18 @@ void reorderImages(int oldIndex, int newIndex) {
     }
     
     var fileName = path.file();
+   // WidgetRef ref = this.context;
+    //String fileName = ref.watch(nameProvider);
      var createPath = await path.createFolder("ImageToPdfConverter");
      File savePath = File("$createPath$fileName.pdf");
+     //print(savePath);
     
    
     
     await savePath.writeAsBytes(await pdf.save());
   
 
-  // var _createPath = await _createFolder("ImageToPdfConverter");
-  //   File _savePath = File(_createPath + "$fileName.pdf");
-  //   final pdfSaveByte = await pdf.save();
-  //   final savePDFfile = _savePath.writeAsBytes(pdfSaveByte);
-  //  return savePDFfile;
+  
     
      
     state = [];

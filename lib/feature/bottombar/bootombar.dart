@@ -11,7 +11,7 @@ class BottomBar extends ConsumerWidget {
 
   static final List<Widget> _widgetOptions = <Widget>[
   const Homepage(),
-  const SelectSource(),
+   const SelectSource(),
    const PDFList(),
   ];
   
