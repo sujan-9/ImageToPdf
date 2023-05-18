@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:imagetopdf/feature/ReorderPage/reorder.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
 
+import '../../model/image_model.dart';
 import '../../widgets/widgets.dart';
 import '../bottombar/bootombar.dart';
 import '../preview/preview.dart';
@@ -16,14 +19,11 @@ import '../selectimage/selectview.dart';
 class EditScreen extends ConsumerWidget {
   EditScreen({Key? key}) : super(key: key);
 
-  List<File> fileImageArray = [];
+  //List<File> fileImageArray = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TextEditingController namecontroller = TextEditingController();
-    // String name = ref.watch(nameProvider);
-    // print(name);
-
+    List<File> fileImageArray = [];
     final img = ref.watch(imgNotifierProvider);
 
     pdf() async {
@@ -37,6 +37,15 @@ class EditScreen extends ConsumerWidget {
       }
     }
 
+    //reorder
+    void reorderImages(int oldIndex, int newIndex) {
+      if (newIndex > oldIndex) newIndex--;
+
+      ref.read(imgNotifierProvider.notifier).reorderImages(oldIndex, newIndex);
+    }
+
+    
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black38,
@@ -44,7 +53,8 @@ class EditScreen extends ConsumerWidget {
           // title: const Text("Edit Image"),
           leading: IconButton(
             onPressed: () {
-              img.clear();
+             
+              ref.read(imgNotifierProvider.notifier).removeAllImages();
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios),
@@ -53,11 +63,12 @@ class EditScreen extends ConsumerWidget {
             TextButton(
               style: TextButton.styleFrom(
                   //backgroundColor: Colors.transparent,
-    
+
                   ),
               onPressed: () {
                 fileImageArray = img.map((e) => File(e.path)).toList();
-    
+                //fileImageArray = File(img.path).toList
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -79,13 +90,11 @@ class EditScreen extends ConsumerWidget {
             TextButton(
               onPressed: () {
                 pdf();
-                // showCustomDialog(context,  ref, pdf);
-                // ref.read(imgNotifierProvider.notifier).createPdf();
-                //  DialogBox(onPressed: pdf);
-    
-                snackbar(context, 'Pdf has beed saved');
-                const Duration(seconds: 2);
-    
+                if (pdf.toString().isNotEmpty) {
+                  snackbar(context, 'Pdf has beed saved');
+                  const Duration(seconds: 2);
+                }
+
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => BottomBar()));
                 //Navigator.pop(context);
@@ -100,14 +109,19 @@ class EditScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            const IconButton(
-              onPressed: null, 
-              icon: Icon(Icons.more_vert_rounded,
-              color: Colors.red,
-              size: 25,
-    
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ReorderPage()));
+              },
+              icon: const Icon(
+                Icons.more_vert_rounded,
+                color: Colors.red,
+                size: 25,
               ),
-              ),
+            ),
           ],
         ),
         body: img.isEmpty
@@ -135,7 +149,8 @@ class EditScreen extends ConsumerWidget {
                                 child: SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.95,
-                                  width: MediaQuery.of(context).size.width * 0.95,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.95,
                                   child: Stack(
                                     children: [
                                       Image.file(
@@ -148,15 +163,10 @@ class EditScreen extends ConsumerWidget {
                                         child: IconButton(
                                           onPressed: () {
                                             ref
-                                                .read(
-                                                    imgNotifierProvider.notifier)
+                                                .read(imgNotifierProvider
+                                                    .notifier)
                                                 .removeImage(img[index]);
-    
-                                            //  if(img){
-                                            // const  Text('no images is selected',
-                                            // style: TextStyle(color: Colors.white),);
-                                            //  }
-    
+
                                             if (img.isEmpty) {
                                               Navigator.pushReplacement(
                                                   context,
@@ -180,7 +190,22 @@ class EditScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.red,
+          onPressed: () {
+            //ref.read(imgNotifierProvider.notifier).pickImagesFromGallery();
+            ref.read(imgNotifierProvider.notifier).addImages();
+          },
+
+          child: const Icon(
+            Icons.add,
+            size: 25,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
+    
   }
+
 }

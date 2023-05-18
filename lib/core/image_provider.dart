@@ -13,6 +13,10 @@ import '../model/pdf.dart';
 
 
 final imgNotifierProvider = StateNotifierProvider<ImgNotifier, List<ImageModel>>((ref) => ImgNotifier());
+// final imgNotifierProvider = StateNotifierProvider.autoDispose<ImgNotifier,List<ImageModel>>((ref) {
+//   return ImgNotifier();
+// });
+
 
 //final pdfPathProvider = StateProvider<String>((ref) => '');
 
@@ -87,6 +91,27 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 }
 
 
+//add images with floating button
+
+void addImages() async {
+  try {
+    // Pick images from gallery using ImagePicker
+    final pickedFiles = await ImagePicker().pickMultiImage();
+
+    for (var pickedFile in pickedFiles) {
+      final file = File(pickedFile.path);
+      final name = pickedFile.name;
+
+      // Create an ImageModel object and add it to the state
+      final image = ImageModel(file.path, name, file);
+      state = [...state, image];
+    }
+  } catch (e) {
+    print('Error picking images: $e');
+  }
+}
+
+
   //remove single image from the list
   void removeImage(ImageModel image) {
     
@@ -95,12 +120,15 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
   
 }
 
-  //remove image to do
+  //remove image all images 
   void removeAllImages() {
+    state = [];
+    selectedImages.clear();
      
-  state = [];
+ 
 }
 
+//manage order of images
 void reorderImages(int oldIndex, int newIndex) {
   if (oldIndex < newIndex) {
     newIndex -= 1;
@@ -108,7 +136,10 @@ void reorderImages(int oldIndex, int newIndex) {
 
   final ImageModel item = state.removeAt(oldIndex);
   state.insert(newIndex, item);
+  state = [...state];
 }
+
+
 
 
   Future<void> createPdf(
@@ -175,53 +206,18 @@ void reorderImages(int oldIndex, int newIndex) {
 
 
 
-  
+  // reorderImage(int oldIndex, int newIndex) {
+  //   if (oldIndex < 0 || oldIndex >= selectedImages.length || newIndex < 0 || newIndex >= selectedImages.length) {
+  //     return; // Invalid indices, do nothing
+  //   }
 
-//  Future<String> _createFolder(String folderName) async {
-//     //Get this App Document Directory
-//     final Directory appDocDir = Directory("storage/emulated/0");
-//     //App Document Directory + folder name
-//     final Directory appDocDirFolder =
-//         Directory('${appDocDir.path}/$folderName/');
+  //   // final image = selectedImages.removeAt(oldIndex);
+  //   // selectedImages.insert(newIndex, image);
 
-//     if (await appDocDirFolder.exists()) {
-//       //if folder already exists return path
-//       return appDocDirFolder.path;
-//     } else {
-//       //if folder not exists create folder and then return its path
-//       final Directory appDocDirNewFolder =
-//           await appDocDirFolder.create(recursive: true);
-//       return appDocDirNewFolder.path;
-//     }
-//   }
-
-
-// Future<String> _createFolder(String folderName) async {
-//   // Request permission
-//   final status = await Permission.manageExternalStorage.request();
-//   if (!status.isGranted) {
-//     throw Exception('Permission denied');
-//   }
-
-//   // Get app document directory
-//   final Directory appDocDir = Directory("storage/emulated/0");
-
-//   // Combine app document directory path with folder name
-//   final Directory appDocDirFolder = Directory('${appDocDir.path}/$folderName/');
-
-//   // If the folder doesn't exist, create it
-//   if (!await appDocDirFolder.exists()) {
-//     try {
-//       await appDocDirFolder.create(recursive: true);
-//     } catch (e) {
-//       throw Exception('Failed to create folder: $e');
-//     }
-//   }
-
-//   // Return the path to the folder
-//   return appDocDirFolder.path;
-// }
-
+  //   final newimage = state.removeAt(oldIndex);
+  //   state.insert(newIndex, newimage);
+  //   return state;
+  // }
     }
 
  
