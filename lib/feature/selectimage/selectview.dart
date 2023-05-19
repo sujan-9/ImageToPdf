@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/nameprovider.dart';
+import '../../helper/pdfFiles.dart';
 import '../../helper/pdfiles.dart';
 
 import '../../widgets/widgets.dart';
@@ -19,50 +17,62 @@ class SelectSource extends ConsumerStatefulWidget {
 
 class _SelectSourceState extends ConsumerState<SelectSource> {
   final TextEditingController controller = TextEditingController();
-  // @override
-  // void initState() {
-    
-  //   super.initState();
-    
-  // }
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Delay the execution of getFiles using addPostFrameCallback
+      ref.read(pdfProvider.notifier).getFiles();
+      //ref.read(renameFileSProvider);
+    });
+  }
 
-   @override
+  @override
   void dispose() {
     controller.dispose();
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    String filename = ref.watch(renameFileSProvider);
-   // print(filename);
-   FilesHelper deleteFile = FilesHelper();
+    final filename = ref.watch(pdfProvider);
 
-    String directory = ("storage/emulated/0/ImageToPdfConverter");
-    List<FileSystemEntity> files =
-        Directory(directory).listSync(recursive: false);
+    final filePaths = ref.watch(pdfProvider);
 
-    List<String> filePaths = [];
-    for (var fileSystemEntity in files) {
-      if (fileSystemEntity.path.endsWith(".pdf")) {
-        filePaths.add(fileSystemEntity.path);
-      }
-    }
-    // //String name = filePaths.elementAt(index).split('/').last;
-
-    
     return SafeArea(
         child: Scaffold(
-      body: Padding(
+          appBar: AppBar(
+            backgroundColor: Colors.red,
+            leading: const Text(""),
+            title:const Text( 'PDF Files',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.w500
+            ),
+            ),
+            elevation: 0,
+            centerTitle: true,
+            titleSpacing: 1,
+          ),
+      body: filePaths.isEmpty?const Center(child:  Text('Nothing to show',
+      style: TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.w600
+      ),
+      ))
+      // RichText(
+      //   text: InlineSpan,
+      // )
+      :
+       Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView.builder(
             itemCount: filePaths.length,
             itemBuilder: (BuildContext context, int index) {
               String currentFilePath = filePaths.elementAt(index);
-              String currentFileName = currentFilePath.split('/').last;
+              // String currentFileName = currentFilePath.split('/').last;
               return Container(
                 height: MediaQuery.of(context).size.height * 0.15,
                 padding: const EdgeInsets.all(10),
@@ -97,7 +107,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                         Text(
                           // filePaths.elementAt(index).split('/').last,
                           //currentFileName,
-                          filename.isNotEmpty?filename:currentFileName,
+                          filename.elementAt(index).split('/').last,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -111,21 +121,21 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Icon(Icons.share),
-                        // Icon(Icons.delete),
+                        
 
                         IconButton(
                           //to be implemented
                           onPressed: () {
-                            // deleteFile.deleteFile(currentFilePath);
-                            setState(() {
-                              deleteDialogBox(context, () {
-                                deleteFile.deleteFile(currentFilePath);
-                               //ref.read(pathProvider.notifier).deleteFile(currentFilePath);
-                                snackbar(context, 'File has been deleted');
+                            
 
-                              });
+                            deleteDialogBox(context, () {
+                              print('delete');
                               
+                              ref
+                                  .read(pdfProvider.notifier)
+                                  .deleteFile(currentFilePath);
+
+                              snackbar(context, 'File has been deleted');
                             });
                           },
                           icon: const Icon(
@@ -152,16 +162,20 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                         IconButton(
                           //rename file
                           onPressed: () {
-                           setState(() {
-                              showCustomDialog(
-                              context,
-                              ref,
-                              index,
-                              filePaths,
-                              controller,
-                            );
-                           });
-                            // RefreshCallback;
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => RenameFileDialog(
+                            //               filePath: currentFilePath,
+                            //             )));
+                            showCustomDialog(
+                                context,
+                                index,
+                                filePaths,
+                                controller,
+                                () => ref.read(pdfProvider.notifier).renamePdf(
+                                    filePaths[index], controller.text));
+                           
                           },
                           icon: const Icon(
                             Icons.drive_file_rename_outline_rounded,

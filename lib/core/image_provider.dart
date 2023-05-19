@@ -26,38 +26,38 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
   List<ImageModel> selectedImages = [];
   
 
-  // Future<void> pickImagesFromCamera()async {
-  //   final status = await Permission.camera.request();
+  Future<void> pickImagesFromCamera()async {
+    final status = await Permission.camera.request();
 
-  // if (status.isGranted) {
-  //   try {
-  //     final pickedFile = await ImagePicker().pickImage
-  //     (source: ImageSource.camera,
-  //     imageQuality: 100,
-  //     preferredCameraDevice: CameraDevice.rear,
-  //     );
+  if (status.isGranted) {
+    try {
+      final pickedFile = await ImagePicker().pickImage
+      (source: ImageSource.camera,
+      imageQuality: 100,
+      preferredCameraDevice: CameraDevice.rear,
+      );
 
-  //     if (pickedFile != null) {
-  //       final file = File(pickedFile.path);
-  //       final name = pickedFile.name;
-  //       selectedImages.add(ImageModel(file.path, name, file));
+      if (pickedFile != null) {
+        final file = File(pickedFile.path);
+        final name = pickedFile.name;
+        selectedImages.add(ImageModel(file.path, name, file));
         
-  //     }
+      }
 
-  //     state = [...state, ...selectedImages];
+      state = [...state, ...selectedImages];
       
-  //   } on Exception catch (e) {
-  //     throw('Error picking images: $e');
-  //   }
-  // } else if (status.isDenied){
-  //   throw('Permission denied');
-  // }
-  // else if (status.isPermanentlyDenied){
-  //   openAppSettings();
+    } on Exception catch (e) {
+      throw('Error picking images: $e');
+    }
+  } else if (status.isDenied){
+    throw('Permission denied');
+  }
+  else if (status.isPermanentlyDenied){
+    openAppSettings();
 
-  // }
+  }
 
-  // }
+  }
 
 
 
@@ -107,7 +107,7 @@ void addImages() async {
       state = [...state, image];
     }
   } catch (e) {
-    print('Error picking images: $e');
+    throw('Error picking images: $e');
   }
 }
 

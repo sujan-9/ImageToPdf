@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
        useMaterial3: true,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(background: Colors.white),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(background: Color.fromRGBO(255, 255, 255, 0.865)),
 
       ),
       //home:   DialogBox(),

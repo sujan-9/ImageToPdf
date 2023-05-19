@@ -2,22 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:imagetopdf/feature/ReorderPage/reorder.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
 
-import '../../model/image_model.dart';
 import '../../widgets/widgets.dart';
 import '../bottombar/bootombar.dart';
 import '../preview/preview.dart';
-import '../selectimage/selectview.dart';
 
 // ignore: must_be_immutable
 class EditScreen extends ConsumerWidget {
-  EditScreen({Key? key}) : super(key: key);
+ const EditScreen({Key? key}) : super(key: key);
 
   //List<File> fileImageArray = [];
 
@@ -37,14 +35,6 @@ class EditScreen extends ConsumerWidget {
       }
     }
 
-    //reorder
-    void reorderImages(int oldIndex, int newIndex) {
-      if (newIndex > oldIndex) newIndex--;
-
-      ref.read(imgNotifierProvider.notifier).reorderImages(oldIndex, newIndex);
-    }
-
-    
 
     return SafeArea(
       child: Scaffold(
@@ -53,7 +43,6 @@ class EditScreen extends ConsumerWidget {
           // title: const Text("Edit Image"),
           leading: IconButton(
             onPressed: () {
-             
               ref.read(imgNotifierProvider.notifier).removeAllImages();
               Navigator.pop(context);
             },
@@ -96,7 +85,7 @@ class EditScreen extends ConsumerWidget {
                 }
 
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => BottomBar()));
+                    MaterialPageRoute(builder: (context) => const BottomBar()));
                 //Navigator.pop(context);
               },
               child: const Text(
@@ -111,10 +100,11 @@ class EditScreen extends ConsumerWidget {
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ReorderPage()));
+                popupmenu();
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => const ReorderPage()));
               },
               icon: const Icon(
                 Icons.more_vert_rounded,
@@ -194,9 +184,13 @@ class EditScreen extends ConsumerWidget {
           backgroundColor: Colors.red,
           onPressed: () {
             //ref.read(imgNotifierProvider.notifier).pickImagesFromGallery();
-            ref.read(imgNotifierProvider.notifier).addImages();
-          },
+            //ref.read(imgNotifierProvider.notifier).addImages();
+            snackbaradd(context, 
+          ()=>  ref.read(imgNotifierProvider.notifier).addImages(),
+          ()=>  ref.read(imgNotifierProvider.notifier).pickImagesFromCamera()
 
+            );
+          },
           child: const Icon(
             Icons.add,
             size: 25,
@@ -205,7 +199,5 @@ class EditScreen extends ConsumerWidget {
         ),
       ),
     );
-    
   }
-
 }

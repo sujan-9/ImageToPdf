@@ -33,8 +33,8 @@ class _HomepageState extends ConsumerState<Homepage> {
                TextButton(
              
              onPressed: (){
-               // ref.read(imgNotifierProvider.notifier).pickImagesFromCamera();
-                 Navigator.of(context).pop();
+                ref.read(imgNotifierProvider.notifier).pickImagesFromCamera();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EditScreen()));
                
 
              },
@@ -50,12 +50,8 @@ class _HomepageState extends ConsumerState<Homepage> {
               onPressed: (){
                
                  ref.read(imgNotifierProvider.notifier).pickImagesFromGallery();
-                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  EditScreen()));
-            //      if (ref.read(imgNotifierProvider.notifier).selectedImages.isNotEmpty) {
-            //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditScreen()));}
-            //  else{
-            //     Navigator.of(context).pop();
-            //  }
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EditScreen()));
+           
               },
               child: const Text('Gallery',style: TextStyle(
                 fontSize: 20,
@@ -81,12 +77,44 @@ class _HomepageState extends ConsumerState<Homepage> {
   }
   @override
   Widget build(BuildContext context) {
-   // final height = MediaQuery.of(context).size.height;
-   // final width = MediaQuery.of(context).size.width;
+   
+    DateTime? currentBackPressTime;
+   Future<bool> _exitApp(BuildContext context) async {
+    // Check if the back button is pressed twice within 2 seconds
+    if (currentBackPressTime == null ||
+        DateTime.now().difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      // First back press, show a message
+      currentBackPressTime = DateTime.now();
+      ScaffoldMessenger.of(context).showSnackBar(
+       const SnackBar(
+          content: Text('Press back again to exit'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return false; // Prevent the app from closing
+    } else {
+      // Second back press within 2 seconds, exit the app
+      return true; // Let the app close
+    }
+  }
     return  WillPopScope(
-      onWillPop: () async => true,
+      onWillPop: () async => _exitApp(context),
       child: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+            leading: const Text(''),
+            backgroundColor: Color.fromARGB(255, 231, 54, 54),
+            centerTitle: true,
+            elevation: 2,
+            title: const Text('PDF Maker',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              
+
+            ),),
+          ),
          
           body:Column(
             mainAxisAlignment: MainAxisAlignment.center,
