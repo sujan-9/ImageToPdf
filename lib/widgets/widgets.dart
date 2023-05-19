@@ -234,25 +234,59 @@ deleteDialogBox(
       });
 }
 
-popupmenu() {
-  return PopupMenuButton(
-    itemBuilder: (BuildContext context) => [
-      PopupMenuItem(
-        child: TextButton(
+ 
+snackbarmenu(
+  BuildContext context,
+  void Function() clearImages,
+  void Function() reorderImages,
+  // String message,
+) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      // width: 120,
+      behavior: SnackBarBehavior.fixed,
+      dismissDirection: DismissDirection.down,
+      elevation: 1,
+      content: Column(children: [
+        TextButton(
           onPressed: () {
-            // Clear all images logic
+            clearImages();
           },
-          child: const Text('Clear All Images'),
+          child: const Text(
+            'Remove all Images',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.red,
+            ),
+          ),
         ),
-      ),
-      PopupMenuItem(
-        child: TextButton(
-          onPressed: () {
-            // Reorder images logic
+       const SizedBox(
+          height: 10,
+        ),
+        TextButton(
+          onPressed:(){
+              reorderImages();
           },
-          child: const Text('Reorder Images'),
+          child: const Text(
+            'Manage Order',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.red,
+            ),
+          ),
         ),
+      ]),
+      duration: const Duration(seconds: 2),
+      backgroundColor: const Color.fromARGB(255, 153, 180, 226),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
       ),
-    ],
+      // margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+
+      padding: const EdgeInsets.all(5),
+    ),
   );
 }
+

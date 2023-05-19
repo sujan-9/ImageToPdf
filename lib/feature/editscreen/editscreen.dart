@@ -15,7 +15,7 @@ import '../preview/preview.dart';
 
 // ignore: must_be_immutable
 class EditScreen extends ConsumerWidget {
- const EditScreen({Key? key}) : super(key: key);
+  const EditScreen({Key? key}) : super(key: key);
 
   //List<File> fileImageArray = [];
 
@@ -34,7 +34,6 @@ class EditScreen extends ConsumerWidget {
         openAppSettings();
       }
     }
-
 
     return SafeArea(
       child: Scaffold(
@@ -100,11 +99,15 @@ class EditScreen extends ConsumerWidget {
             ),
             IconButton(
               onPressed: () {
-                popupmenu();
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => const ReorderPage()));
+                snackbarmenu(
+                    context,
+                    () => ref
+                        .read(imgNotifierProvider.notifier)
+                        .removeAllImages(),
+                    () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ReorderPage())));
               },
               icon: const Icon(
                 Icons.more_vert_rounded,
@@ -183,12 +186,10 @@ class EditScreen extends ConsumerWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.red,
           onPressed: () {
-            //ref.read(imgNotifierProvider.notifier).pickImagesFromGallery();
-            //ref.read(imgNotifierProvider.notifier).addImages();
-            snackbaradd(context, 
-          ()=>  ref.read(imgNotifierProvider.notifier).addImages(),
-          ()=>  ref.read(imgNotifierProvider.notifier).pickImagesFromCamera()
-
+            snackbaradd(
+              context,
+              () => ref.read(imgNotifierProvider.notifier).addFromCamera(),
+              () => ref.read(imgNotifierProvider.notifier).addImages(),
             );
           },
           child: const Icon(
