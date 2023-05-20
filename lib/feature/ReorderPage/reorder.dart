@@ -66,7 +66,7 @@ class ReorderPage extends ConsumerWidget {
                     // filePaths.elementAt(index).split('/').last,
                     //currentFileName,
                     img[i].name.length > 10
-                        ? img[i].name.substring(0, 20) + '...pdf'
+                        ? '${img[i].name.substring(0, 20)}...pdf'
                         : img[i].name,
                     // overflow: TextOverflow.ellipsis,
                     // maxLines: 2,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 snackbar(
   BuildContext context,
-  String message,
+  String message, 
 ) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -48,6 +48,11 @@ snackbaradd(
       // width: 120,
       behavior: SnackBarBehavior.fixed,
       dismissDirection: DismissDirection.down,
+      margin: const EdgeInsets.only(
+          bottom: 00,
+          right: 20,
+          top: 10,
+          left: 20),
       elevation: 1,
       content: Column(children: [
         TextButton(
@@ -246,6 +251,11 @@ snackbarmenu(
       // width: 120,
       behavior: SnackBarBehavior.fixed,
       dismissDirection: DismissDirection.down,
+      margin: const EdgeInsets.only(
+          bottom: 0,
+          right: 20,
+          top: 10,
+          left: 20),
       elevation: 1,
       content: Column(children: [
         TextButton(

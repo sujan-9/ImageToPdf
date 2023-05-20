@@ -185,7 +185,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       for (var image in state) {
         // final imageFile = File(image.path);
         // final bytes = imageFile.readAsBytesSync();
-         final compressedImage = await compressImage (XFile(image.path), 70);
+         final compressedImage = await compressImage (XFile(image.path), 50);
          final bytes = compressedImage.readAsBytesSync();
          final imageProvider = pw.MemoryImage(bytes);
 
