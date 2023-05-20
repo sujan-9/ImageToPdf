@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 snackbar(
   BuildContext context,
@@ -13,9 +14,9 @@ snackbar(
       content: Center(
         child: Text(
           message,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 20.sp,
             //fontWeight: FontWeight.w500,
           ),
         ),
@@ -23,7 +24,7 @@ snackbar(
       duration: const Duration(seconds: 2),
       backgroundColor: Colors.redAccent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
       ),
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       //  margin: EdgeInsets.only(
@@ -31,7 +32,7 @@ snackbar(
       //     right: 20,
       //     top: 10,
       //     left: 20),
-      padding: const EdgeInsets.all(5),
+      padding:  EdgeInsets.all(5.w),
     ),
   );
 }
@@ -45,40 +46,36 @@ snackbaradd(
 ) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      // width: 120,
+      // width: 420,
       behavior: SnackBarBehavior.fixed,
       dismissDirection: DismissDirection.down,
-      margin: const EdgeInsets.only(
-          bottom: 00,
-          right: 20,
-          top: 10,
-          left: 20),
+      
       elevation: 1,
       content: Column(children: [
         TextButton(
           onPressed: () {
             camera();
           },
-          child: const Text(
+          child:  Text(
             'Camera',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               color: Colors.red,
             ),
           ),
         ),
-       const SizedBox(
-          height: 10,
+       SizedBox(
+          height: 10.h,
         ),
         TextButton(
           onPressed:(){
             gallery();
           },
-          child: const Text(
+          child:  Text(
             'Gallery',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               color: Colors.red,
             ),
@@ -92,7 +89,7 @@ snackbaradd(
       ),
       // margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
 
-      padding: const EdgeInsets.all(5),
+      padding:  EdgeInsets.all(5.w),
     ),
   );
 }
@@ -110,10 +107,10 @@ showCustomDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text(
+        title:  Text(
           'Rename file',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -121,8 +118,8 @@ showCustomDialog(
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              const SizedBox(
-                height: 10,
+               SizedBox(
+                height: 10.h,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -139,20 +136,20 @@ showCustomDialog(
                     nameController.text = value;
                   },
                   //onSubmitted: (value) => nameController.text = value,
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     focusColor: Colors.yellow,
                     hintText: 'Enter file name',
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
-                    contentPadding: EdgeInsets.all(10),
+                    contentPadding: EdgeInsets.all(10.w),
                     suffixIcon: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 12, 5, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 12, 5, 0),
                       child: Text(
                         '.pdf',
                         style: TextStyle(
                           color: Colors.red,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -165,9 +162,9 @@ showCustomDialog(
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('CANCEL',
+            child:  Text('CANCEL',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 )),
             onPressed: () {
@@ -175,9 +172,9 @@ showCustomDialog(
             },
           ),
           TextButton(
-              child: const Text('SAVE',
+              child:  Text('SAVE',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                   )),
               onPressed: () {
@@ -201,11 +198,11 @@ deleteDialogBox(
         return AlertDialog(
           content: SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children:  <Widget>[
                 Text(
                   'Are you sure you want to delete this file?',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -214,9 +211,9 @@ deleteDialogBox(
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Yes',
+              child:  Text('Yes',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                   )),
               onPressed: () {
@@ -225,9 +222,9 @@ deleteDialogBox(
               },
             ),
             TextButton(
-              child: const Text('No',
+              child:  Text('No',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                   )),
               onPressed: () {
@@ -251,37 +248,33 @@ snackbarmenu(
       // width: 120,
       behavior: SnackBarBehavior.fixed,
       dismissDirection: DismissDirection.down,
-      margin: const EdgeInsets.only(
-          bottom: 0,
-          right: 20,
-          top: 10,
-          left: 20),
+     
       elevation: 1,
       content: Column(children: [
         TextButton(
           onPressed: () {
             clearImages();
           },
-          child: const Text(
+          child:  Text(
             'Remove all Images',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               color: Colors.red,
             ),
           ),
         ),
-       const SizedBox(
-          height: 10,
+        SizedBox(
+          height: 10.h,
         ),
         TextButton(
           onPressed:(){
               reorderImages();
           },
-          child: const Text(
+          child:  Text(
             'Manage Order',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w600,
               color: Colors.red,
             ),
@@ -291,11 +284,11 @@ snackbarmenu(
       duration: const Duration(seconds: 2),
       backgroundColor: const Color.fromARGB(255, 153, 180, 226),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(6.r),
       ),
       // margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
 
-      padding: const EdgeInsets.all(5),
+      padding:  EdgeInsets.all(5.w),
     ),
   );
 }

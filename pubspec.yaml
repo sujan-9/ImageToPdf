@@ -49,6 +49,7 @@ dependencies:
   url_launcher: ^6.1.11
   syncfusion_flutter_pdfviewer: ^21.2.5
   share_plus: ^7.0.1
+  flutter_screenutil: ^5.7.0
   
   
 

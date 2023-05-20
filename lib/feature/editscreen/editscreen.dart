@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:imagetopdf/feature/ReorderPage/reorder.dart';
 
@@ -65,12 +66,12 @@ class EditScreen extends ConsumerWidget {
                             )));
                 // Navigator.pop(context);
               },
-              child: const Text(
+              child:  Text(
                 "Preview",
                 style: TextStyle(
                   backgroundColor: Colors.transparent,
                   color: Colors.red,
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -87,12 +88,12 @@ class EditScreen extends ConsumerWidget {
                     MaterialPageRoute(builder: (context) => const BottomBar()));
                 //Navigator.pop(context);
               },
-              child: const Text(
+              child:  Text(
                 "Save",
                 style: TextStyle(
                   backgroundColor: Colors.transparent,
                   color: Colors.red,
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -109,26 +110,26 @@ class EditScreen extends ConsumerWidget {
                         MaterialPageRoute(
                             builder: (context) => const ReorderPage())));
               },
-              icon: const Icon(
+              icon:  Icon(
                 Icons.more_vert_rounded,
                 color: Colors.red,
-                size: 25,
+                size: 25.sp,
               ),
             ),
           ],
         ),
         body: img.isEmpty
-            ? const Center(
+            ?  Center(
                 child: Text(
                   'No images is selected',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 20.sp,
                   ),
                 ),
               )
             : Padding(
-                padding: const EdgeInsets.fromLTRB(10, 50, 10, 5),
+                padding: EdgeInsets.fromLTRB(10.w, 50.h, 10.w, 5.h),
                 child: Column(
                   children: [
                     Expanded(
@@ -137,8 +138,8 @@ class EditScreen extends ConsumerWidget {
                           scrollDirection: Axis.horizontal,
                           itemCount: img.length,
                           itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 7),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5.w, vertical: 7.h),
                                 child: SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.95,
@@ -168,10 +169,10 @@ class EditScreen extends ConsumerWidget {
                                                           const BottomBar()));
                                             }
                                           },
-                                          icon: const Icon(
+                                          icon:  Icon(
                                             Icons.cancel,
                                             color: Colors.red,
-                                            size: 40,
+                                            size: 40.sp,
                                           ),
                                         ),
                                       )
@@ -192,9 +193,9 @@ class EditScreen extends ConsumerWidget {
               () => ref.read(imgNotifierProvider.notifier).addImages(),
             );
           },
-          child: const Icon(
+          child:  Icon(
             Icons.add,
-            size: 25,
+            size: 25.sp,
             color: Colors.white,
           ),
         ),

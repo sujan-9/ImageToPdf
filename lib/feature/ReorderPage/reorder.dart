@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/image_provider.dart';
 
@@ -28,7 +29,7 @@ class ReorderPage extends ConsumerWidget {
               Container(
               key: ValueKey(img[i]),
               height: MediaQuery.of(context).size.height * 0.15,
-              padding: const EdgeInsets.all(10),
+              padding:  EdgeInsets.all(10.w),
               margin: EdgeInsets.symmetric(
                 vertical: MediaQuery.of(context).size.height * 0.01,
                 horizontal: MediaQuery.of(context).size.width * 0.01,
@@ -36,7 +37,7 @@ class ReorderPage extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 // color: Colors.red,
-                borderRadius: BorderRadius.circular(17),
+                borderRadius: BorderRadius.circular(17.r),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -59,8 +60,8 @@ class ReorderPage extends ConsumerWidget {
                     ),
 
 
-                  const SizedBox(
-                    width: 10,
+                   SizedBox(
+                    width: 10.w,
                   ),
                   Text(
                     // filePaths.elementAt(index).split('/').last,
@@ -70,8 +71,8 @@ class ReorderPage extends ConsumerWidget {
                         : img[i].name,
                     // overflow: TextOverflow.ellipsis,
                     // maxLines: 2,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style:  TextStyle(
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../helper/imageCompress.dart';
 import '../../helper/pdfFiles.dart';
@@ -49,26 +50,26 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         leading: const Text(""),
-        title: const Text(
+        title:  Text(
           'PDF Files',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w500),
+              color: Colors.white, fontSize: 25.sp, fontWeight: FontWeight.w500),
         ),
         elevation: 0,
         centerTitle: true,
         titleSpacing: 1,
       ),
       body: filePaths.isEmpty
-          ? const Center(
+          ?  Center(
               child: Text(
               'Nothing to show',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.w600),
             ))
           // RichText(
           //   text: InlineSpan,
           // )
           : Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding:  EdgeInsets.all(20.0.w),
               child: ListView.builder(
                   itemCount: filePaths.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -76,7 +77,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                     // String currentFileName = currentFilePath.split('/').last;
                     return Container(
                       //height: MediaQuery.of(context).size.height * 0.15,
-                      padding: const EdgeInsets.all(10),
+                      padding:  EdgeInsets.all(10.w),
                       margin: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.01,
                         horizontal: MediaQuery.of(context).size.width * 0.01,
@@ -84,7 +85,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         // color: Colors.red,
-                        borderRadius: BorderRadius.circular(17),
+                        borderRadius: BorderRadius.circular(17.r),
                         boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
@@ -111,28 +112,33 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                                   path: currentFilePath,
                                               )));
                                   
-                                  // String actualPath = await UrlLauncherServices
-                                  //     .getActualFilePath(filePaths[index]);
-                                  // if (actualPath != null) {
-                                  //   await UrlLauncherServices.launchFile(
-                                  //       actualPath);
-                                  //       print(actualPath.length);
-                                  // } else {
-                                  //   print('Failed to get actual file path');
-                                  // }
+                                 
+                                  
                                 },
                                 icon: const Icon(Icons.picture_as_pdf_rounded),
                               ),
-                              const SizedBox(
-                                width: 10,
+                              SizedBox(
+                                width: 10.w,
                               ),
-                              Text(
-                                // filePaths.elementAt(index).split('/').last,
-                                //currentFileName,
-                                filename.elementAt(index).split('/').last,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                              InkWell(
+                                onTap: (){
+                                 
+
+                                   Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PDFViewer(
+                                                  path: currentFilePath,
+                                              )));
+                                },
+                                child: Text(
+                                  // filePaths.elementAt(index).split('/').last,
+                                  //currentFileName,
+                                  filename.elementAt(index).split('/').last,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               )
                             ],
@@ -156,9 +162,9 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                     snackbar(context, 'File has been deleted');
                                   });
                                 },
-                                icon: const Icon(
+                                icon:  Icon(
                                   Icons.delete_forever_rounded,
-                                  size: 25,
+                                  size: 25.sp,
                                 ),
                                 style: TextButton.styleFrom(
                                   iconColor: Colors.red,
@@ -170,9 +176,9 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                 onPressed: (){
                                   sharePDFFile(currentFilePath);
                                 },
-                                icon: const Icon(
+                                icon:  Icon(
                                   Icons.share_rounded,
-                                  size: 23,
+                                  size: 23.sp,
                                 ),
                                 style: TextButton.styleFrom(
                                   iconColor: Colors.red,
@@ -182,12 +188,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                               IconButton(
                                 //rename file
                                 onPressed: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => RenameFileDialog(
-                                  //               filePath: currentFilePath,
-                                  //             )));
+                                 
                                   showCustomDialog(
                                       context,
                                       index,
@@ -198,9 +199,9 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                           .renamePdf(filePaths[index],
                                               controller.text));
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.drive_file_rename_outline_rounded,
-                                  size: 25,
+                                  size: 25.sp,
                                 ),
                                 style: TextButton.styleFrom(
                                   iconColor: Colors.red,

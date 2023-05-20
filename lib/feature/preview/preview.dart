@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:imagetopdf/model/image_model.dart';
 
 //import '../../core/image_provider.dart';
@@ -38,13 +39,13 @@ class PreviewPage extends ConsumerWidget {
             
             Container(
               height: MediaQuery.of(context).size.height ,
-              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              padding:  EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 5.h),
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemCount: fileImageArray.length,
                 itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 3,vertical: 2),
+                  padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 2.h),
                   child:  Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

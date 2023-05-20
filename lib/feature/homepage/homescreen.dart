@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/image_provider.dart';
 import '../editscreen/editscreen.dart';
@@ -97,19 +98,23 @@ class _HomepageState extends ConsumerState<Homepage> {
       return true; // Let the app close
     }
   }
+  // final height = MediaQuery.of(context).size.height;
+  // final width = MediaQuery.of(context).size.width;
+  // print(height);
+  // print(width);
     return  WillPopScope(
       onWillPop: () async => _exitApp(context),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
             leading: const Text(''),
-            backgroundColor: Color.fromARGB(255, 231, 54, 54),
+            backgroundColor:const Color.fromARGB(255, 231, 54, 54),
             centerTitle: true,
             elevation: 2,
-            title: const Text('PDF Maker',
+            title:  Text('PDF Maker',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w500,
               
 
@@ -120,32 +125,50 @@ class _HomepageState extends ConsumerState<Homepage> {
             mainAxisAlignment: MainAxisAlignment.center,
            crossAxisAlignment: CrossAxisAlignment.center,
             children:   [
-                        const Center(child: Text("Image")),
-                       const Text("No image is Selected"),
-                        const Text("Select an image to start editing"),
-                        const SizedBox(height: 20,),
-                        TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.red),
-                            foregroundColor: MaterialStateProperty.all(Colors.white),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: const BorderSide(color: Colors.purple)
+                       Center(child: Text("Image",
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        )),
+                        Text("No image is Selected",
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        ),
+                         Text("Select an image to start editing",
+                         style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                         ),
+                         SizedBox(height: 20.h,),
+                        SizedBox(
+                          width: 200.w,
+                          child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.red),
+                              foregroundColor: MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0).r,
+                                  side: const BorderSide(color: Colors.purple)
+                                )
                               )
-                            )
-                          
-                          ),
-                          onPressed: () {
-                            _showDialog();},
-                           child: const Text('Select Images',
-                           style: TextStyle(
-                             color: Colors.black,
-                             fontSize: 20,
-                             fontWeight: FontWeight.bold,
-                           ),
-                           
-                           ))
+                            
+                            ),
+                            onPressed: () {
+                              _showDialog();},
+                             child:  Text('Select Images',
+                             style: TextStyle(
+                               color: Colors.black,
+                               fontSize: 20.sp,
+                               fontWeight: FontWeight.bold,
+                             ),
+                             
+                             )),
+                        )
 
                         
                 
