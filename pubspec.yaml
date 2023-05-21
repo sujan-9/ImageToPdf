@@ -51,6 +51,7 @@ dependencies:
   share_plus: ^7.0.1
   flutter_screenutil: ^5.7.0
   motion_toast: ^2.6.8
+  google_mobile_ads: ^3.0.0
   
   
 

@@ -1,27 +1,18 @@
 import 'dart:io';
-
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image/image.dart' as img;
-
-import 'package:image_picker/image_picker.dart';
-
-import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
-
 import '../helper/folderser.dart';
-import '../helper/imageCompress.dart';
 import '../model/image_model.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 
 final imgNotifierProvider =
     StateNotifierProvider<ImgNotifier, List<ImageModel>>(
-        (ref) => ImgNotifier());
-// final imgNotifierProvider = StateNotifierProvider.autoDispose<ImgNotifier,List<ImageModel>>((ref) {
-//   return ImgNotifier();
-// });
-
-//final pdfPathProvider = StateProvider<String>((ref) => '');
+  (ref) => ImgNotifier(),
+);
 
 class ImgNotifier extends StateNotifier<List<ImageModel>> {
   ImgNotifier() : super([]);
@@ -42,12 +33,12 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         if (pickedFile != null) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
-          final compressedFile = await compressFile(file: file);
-          selectedImages.add(ImageModel(compressedFile.path, name, compressedFile));
+          selectedImages.add(ImageModel(file.path, name, file));
         }
 
         state = [...state, ...selectedImages];
-      } on Exception catch (e) {
+       // selectedImages.clear();
+      } catch (e) {
         throw ('Error picking images: $e');
       }
     } else if (status.isDenied) {
@@ -67,14 +58,13 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         for (var pickedFile in pickedFiles) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
-        // testCompressAndGetFile(file, file.path);
-         final compressedFile = await compressFile(file: file);
-
-          selectedImages.add(ImageModel(compressedFile.path, name, compressedFile));
+          selectedImages.add(ImageModel(file.path, name, file));
         }
 
         state = [...state, ...selectedImages];
-      } on Exception catch (e) {
+       // selectedImages.clear();
+       
+      } catch (e) {
         throw ('Error picking images: $e');
       }
     } else if (status.isDenied) {
@@ -84,71 +74,55 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
     }
   }
 
-//add images with floating button from gallery
-
   void addImages() async {
     try {
-      // Pick images from gallery using ImagePicker
       final pickedFiles = await ImagePicker().pickMultiImage();
 
       for (var pickedFile in pickedFiles) {
         final file = File(pickedFile.path);
         final name = pickedFile.name;
-        //testCompressAndGetFile(file, file.path);
-         final compressedFile = await compressFile(file: file);
-
-        // Create an ImageModel object and add it to the state
-        final image = ImageModel(compressedFile.path, name, compressedFile);
-        state = [...state, image];
+        final image = ImageModel(file.path, name, file);
+        selectedImages.add(image);
       }
+
+      state = [...state, ...selectedImages];
+     // selectedImages.clear();
     } catch (e) {
       throw ('Error picking images: $e');
     }
   }
 
-
-  //add images from camera
-
- void addFromCamera ()async{
-  try{
+  void addFromCamera() async {
+    try {
       final pickedFile = await ImagePicker().pickImage(
-          source: ImageSource.camera,
-          imageQuality: 100,
-          preferredCameraDevice: CameraDevice.rear,
-        );
+        source: ImageSource.camera,
+        imageQuality: 100,
+        preferredCameraDevice: CameraDevice.rear,
+      );
 
-        if (pickedFile != null) {
-          final file = File(pickedFile.path);
-          final name = pickedFile.name;
-          final compressedFile = await compressFile(file: file);
-
-           final image = ImageModel(compressedFile.path, name, compressedFile);
-        state = [...state, image];
-        
-        }
-      
-       
-
+      if (pickedFile != null) {
+        final file = File(pickedFile.path);
+        final name = pickedFile.name;
+        final image = ImageModel(file.path, name, file);
+        selectedImages.add(image);
+        state = [...state, ...selectedImages];
+       // selectedImages.clear(); 
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
-  catch(e){
-   print(e.toString());
-  }
- }
 
-
-  //remove single image from the list
   void removeImage(ImageModel image) {
     state = state.where((img) => img.path != image.path).toList();
     selectedImages.remove(image);
   }
 
-  //remove image all images
   void removeAllImages() {
     state = [];
     selectedImages.clear();
   }
 
-//manage order of images
   void reorderImages(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
@@ -159,43 +133,44 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
     state = [...state];
   }
 
-  //compress file
-  Future<File> compressImage(XFile imageFile, int quality) async {
-  final file = File(imageFile.path);
-  final bytes = await file.readAsBytes();
+  Future<void> createPdf() async {
+  
+   
 
-  final image = img.decodeImage(bytes);
-  final compressedImage = img.encodeJpg(image!, quality: quality);
-  //final compressedImage = img.encodeJpg(compressedImg!);
-
-
-  final compressedFile = File('${file.path}_compressed.jpg');
-  await compressedFile.writeAsBytes(compressedImage);
-
-  return compressedFile;
-}
-
-
-  Future<void> createPdf(
-      // String fileName,
-      ) async {
     PdfModel path = PdfModel();
     final status = await Permission.storage.request();
-    // BuildContext context;
-    // WidgetRef ref = this.context;
+
     if (status.isGranted) {
+      
       if (state.isEmpty) {
+        print('emtpy');
+         print(selectedImages.length);
         return;
       }
 
       final pdf = pw.Document();
 
       for (var image in state) {
-        // final imageFile = File(image.path);
-        // final bytes = imageFile.readAsBytesSync();
-         final compressedImage = await compressImage (XFile(image.path), 50);
-         final bytes = compressedImage.readAsBytesSync();
-         final imageProvider = pw.MemoryImage(bytes);
+        final imageFile = File(image.path);
+
+        //compression
+        // Compress the image
+        final tempDir = await path_provider.getTemporaryDirectory();
+      final compressedFile = await FlutterImageCompress.compressAndGetFile(
+        imageFile.path,
+        '${tempDir.path}/${image.name}', // Provide a temporary path for the compressed image
+        quality: 75, // Adjust the quality as needed
+      );
+
+      final bytes = await compressedFile!.readAsBytes();
+      final imageProvider = pw.MemoryImage(bytes);
+
+
+
+
+
+        // final bytes = await imageFile.readAsBytes();
+        // final imageProvider = pw.MemoryImage(bytes);
 
         pdf.addPage(
           pw.Page(
@@ -209,21 +184,16 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       }
 
       var fileName = path.file();
-      
       var createPath = await path.createFolder("ImageToPdfConverter");
       File savePath = File("$createPath$fileName.pdf");
-      
 
       await savePath.writeAsBytes(await pdf.save());
 
       state = [];
-
-      
     } else if (status.isDenied) {
-      throw ('denied');
+      throw ('Permission denied');
     } else if (status.isPermanentlyDenied) {
       openAppSettings();
     }
   }
-
 }

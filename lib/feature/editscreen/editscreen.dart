@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,21 +11,46 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
 
-import '../../core/provider.dart';
+
 import '../../widgets/widgets.dart';
 import '../bottombar/bootombar.dart';
 import '../preview/preview.dart';
 
 // ignore: must_be_immutable
-class EditScreen extends ConsumerWidget {
+class EditScreen extends ConsumerStatefulWidget {
   const EditScreen({Key? key}) : super(key: key);
 
-  //List<File> fileImageArray = [];
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _EditScreenState();
+}
+
+class _EditScreenState extends ConsumerState<EditScreen> {
+  final PageController _pageController = PageController();
+  int _currentPageIndex = 0;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<File> fileImageArray = [];
     final img = ref.watch(imgNotifierProvider);
+
+    //pagecontroller
+
+    void scrollToNextImage() {
+      if (_currentPageIndex < img.length - 1) {
+        _pageController.animateToPage(
+          _currentPageIndex + 1,
+          duration: const Duration(
+              milliseconds: 300), // Replace with the desired animation duration
+          curve: Curves.elasticInOut, // Replace with the desired animation curve
+        );
+      }
+    }
 
     pdf() async {
       final status = await Permission.manageExternalStorage.request();
@@ -36,8 +62,8 @@ class EditScreen extends ConsumerWidget {
         openAppSettings();
       }
     }
-   // bool isSaving = false;
-   // final isSaving = ref.watch(isSavingProvider);
+    // bool isSaving = false;
+    // final isSaving = ref.watch(isSavingProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -69,7 +95,7 @@ class EditScreen extends ConsumerWidget {
                             )));
                 // Navigator.pop(context);
               },
-              child:  Text(
+              child: Text(
                 "Preview",
                 style: TextStyle(
                   backgroundColor: Colors.transparent,
@@ -80,20 +106,25 @@ class EditScreen extends ConsumerWidget {
               ),
             ),
             TextButton(
-              onPressed: () async{
+              onPressed: ()  {
+               const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),);
+                 pdf();
+
                 
-                await pdf();
                 
-                  // ignore: use_build_context_synchronously
-                  snackbar(context, 'Pdf has beed saved');
-                  const Duration(seconds: 2,);
+                snackbar(context, 'Generating PDF wait...');
+                Timer(const Duration(seconds: 3), () {
                   
-                // ignore: use_build_context_synchronously
-                Navigator.pushReplacement(context,
+                  snackbar(context, 'Pdf has beed saved');
+                   Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const BottomBar()));
                 ref.read(imgNotifierProvider.notifier).removeAllImages();
+
+                });
+               
               },
-              child:  Text(
+              child: Text(
                 "Save",
                 style: TextStyle(
                   backgroundColor: Colors.transparent,
@@ -115,7 +146,7 @@ class EditScreen extends ConsumerWidget {
                         MaterialPageRoute(
                             builder: (context) => const ReorderPage())));
               },
-              icon:  Icon(
+              icon: Icon(
                 Icons.more_vert_rounded,
                 color: Colors.red,
                 size: 25.sp,
@@ -124,7 +155,7 @@ class EditScreen extends ConsumerWidget {
           ],
         ),
         body: img.isEmpty
-            ?  Center(
+            ? Center(
                 child: Text(
                   'No images is selected',
                   style: TextStyle(
@@ -138,53 +169,65 @@ class EditScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     Expanded(
-                      child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: img.length,
-                          itemBuilder: (context, index) => Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5.w, vertical: 7.h),
-                                child: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.95,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.95,
-                                  child: Stack(
-                                    children: [
-                                      Image.file(
-                                        img[index].imagefile,
-                                        fit: BoxFit.fill,
-                                      ),
-                                      Positioned(
-                                        top: 2,
-                                        right: 2,
-                                        child: IconButton(
-                                          onPressed: () {
-                                            ref
-                                                .read(imgNotifierProvider
-                                                    .notifier)
-                                                .removeImage(img[index]);
-
-                                            if (img.isEmpty) {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const BottomBar()));
-                                            }
-                                          },
-                                          icon:  Icon(
-                                            Icons.cancel,
-                                            color: Colors.red,
-                                            size: 40.sp,
-                                          ),
+                      child: GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          if (details.velocity.pixelsPerSecond.dx > 0) {
+                            // Swiped to the right
+                            scrollToNextImage();
+                          } else if (details.velocity.pixelsPerSecond.dx < 0) {
+                            // Swiped to the left
+                            // Implement scrolling to previous image if needed
+                          }
+                        },
+                        child: ListView.builder(
+                            controller: _pageController,
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: img.length,
+                            itemBuilder: (context, index) => Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 5.w, vertical: 7.h),
+                                  child: SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.95,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.95,
+                                    child: Stack(
+                                      children: [
+                                        Image.file(
+                                          img[index].imagefile,
+                                          fit: BoxFit.fill,
                                         ),
-                                      )
-                                    ],
+                                        Positioned(
+                                          top: 2,
+                                          right: 2,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              ref
+                                                  .read(imgNotifierProvider
+                                                      .notifier)
+                                                  .removeImage(img[index]);
+
+                                              if (img.isEmpty) {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const BottomBar()));
+                                              }
+                                            },
+                                            icon: Icon(
+                                              Icons.cancel,
+                                              color: Colors.red,
+                                              size: 40.sp,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )),
+                                )),
+                      ),
                     ),
                   ],
                 ),
@@ -198,7 +241,7 @@ class EditScreen extends ConsumerWidget {
               () => ref.read(imgNotifierProvider.notifier).addImages(),
             );
           },
-          child:  Icon(
+          child: Icon(
             Icons.add,
             size: 25.sp,
             color: Colors.white,

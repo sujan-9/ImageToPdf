@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:motion_toast/motion_toast.dart';
+import '../../config/constant/text.dart';
 import '../../helper/pdfFiles.dart';
 import '../../helper/sharePDF.dart';
 import '../../widgets/widgets.dart';
@@ -45,21 +46,23 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
-        leading: const Text(""),
-        title: Text(
+        automaticallyImplyLeading: false,
+        //backgroundColor: Colors.red,
+       // leading: const Text(""),
+        title: titletext(
           'PDF Files',
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 25.sp,
-              fontWeight: FontWeight.w500),
         ),
+        shape: Border(
+            bottom: BorderSide(
+              color: Colors.red,
+              width: 1.8.w,
+            ),
+          ),
         elevation: 0,
         centerTitle: true,
         titleSpacing: 1,
       ),
-      body:
-       filePaths.isEmpty
+      body: filePaths.isEmpty
           ? Center(
               child: Text(
               'Nothing to show',

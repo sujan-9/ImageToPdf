@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 
+import '../../config/constant/text.dart';
 import '../bottombar/bootombar.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -17,14 +18,11 @@ class SplashScreen extends StatelessWidget {
       );
     });
 
-    return const Scaffold(
+    return  Scaffold(
       body: Center(
-        child: Text(
+        child: titletext(
           'Image To PDF',
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          
         ),
       )
 

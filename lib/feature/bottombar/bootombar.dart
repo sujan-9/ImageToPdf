@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:imagetopdf/feature/bottombar/provider.dart';
 import 'package:imagetopdf/feature/homepage/homescreen.dart';
-import 'package:imagetopdf/widgets/widgets.dart';
+
 
 import '../selectimage/selectview.dart';
-import '../setting/lpdf_list.dart';
+
+import '../setting/settingpage.dart';
 
 class BottomBar extends ConsumerWidget {
   const BottomBar({super.key});
@@ -15,7 +16,7 @@ class BottomBar extends ConsumerWidget {
   static final List<Widget> _widgetOptions = <Widget>[
   const Homepage(),
    const SelectSource(),
-   const PDFList(),
+   const SettingPage(),
   ];
   
 

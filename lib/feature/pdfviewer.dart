@@ -25,6 +25,7 @@ class _PDFViewerState extends State<PDFViewer> {
     String name = widget.path.split('/').last;
     return Scaffold(
       appBar: AppBar(
+         automaticallyImplyLeading: false,
         title: Text(
         //  name.length > 0 ? '${name.substring(0, 20)}...pdf' :
            name,
