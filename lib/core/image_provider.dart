@@ -9,8 +9,10 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../helper/folderser.dart';
+import '../helper/imageCompress.dart';
 import '../model/image_model.dart';
-import '../model/pdf.dart';
+
 
 final imgNotifierProvider =
     StateNotifierProvider<ImgNotifier, List<ImageModel>>(
@@ -40,7 +42,8 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         if (pickedFile != null) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
-          selectedImages.add(ImageModel(file.path, name, file));
+          final compressedFile = await compressFile(file: file);
+          selectedImages.add(ImageModel(compressedFile.path, name, compressedFile));
         }
 
         state = [...state, ...selectedImages];
@@ -64,8 +67,10 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         for (var pickedFile in pickedFiles) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
+        // testCompressAndGetFile(file, file.path);
+         final compressedFile = await compressFile(file: file);
 
-          selectedImages.add(ImageModel(file.path, name, file));
+          selectedImages.add(ImageModel(compressedFile.path, name, compressedFile));
         }
 
         state = [...state, ...selectedImages];
@@ -79,7 +84,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
     }
   }
 
-//add images with floating button
+//add images with floating button from gallery
 
   void addImages() async {
     try {
@@ -89,9 +94,11 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       for (var pickedFile in pickedFiles) {
         final file = File(pickedFile.path);
         final name = pickedFile.name;
+        //testCompressAndGetFile(file, file.path);
+         final compressedFile = await compressFile(file: file);
 
         // Create an ImageModel object and add it to the state
-        final image = ImageModel(file.path, name, file);
+        final image = ImageModel(compressedFile.path, name, compressedFile);
         state = [...state, image];
       }
     } catch (e) {
@@ -113,8 +120,9 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         if (pickedFile != null) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
+          final compressedFile = await compressFile(file: file);
 
-           final image = ImageModel(file.path, name, file);
+           final image = ImageModel(compressedFile.path, name, compressedFile);
         state = [...state, image];
         
         }
@@ -123,7 +131,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
   }
   catch(e){
-
+   print(e.toString());
   }
  }
 

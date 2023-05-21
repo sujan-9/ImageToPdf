@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 
 class PDFViewer extends StatefulWidget {
   String path;

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../helper/imageCompress.dart';
+import 'package:motion_toast/motion_toast.dart';
 import '../../helper/pdfFiles.dart';
-import '../../helper/pdfiles.dart';
-
 import '../../helper/sharePDF.dart';
 import '../../widgets/widgets.dart';
 import '../pdfviewer.dart';
@@ -50,17 +47,20 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         leading: const Text(""),
-        title:  Text(
+        title: Text(
           'PDF Files',
           style: TextStyle(
-              color: Colors.white, fontSize: 25.sp, fontWeight: FontWeight.w500),
+              color: Colors.white,
+              fontSize: 25.sp,
+              fontWeight: FontWeight.w500),
         ),
         elevation: 0,
         centerTitle: true,
         titleSpacing: 1,
       ),
-      body: filePaths.isEmpty
-          ?  Center(
+      body:
+       filePaths.isEmpty
+          ? Center(
               child: Text(
               'Nothing to show',
               style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.w600),
@@ -69,7 +69,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
           //   text: InlineSpan,
           // )
           : Padding(
-              padding:  EdgeInsets.all(20.0.w),
+              padding: EdgeInsets.all(20.0.w),
               child: ListView.builder(
                   itemCount: filePaths.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -77,7 +77,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                     // String currentFileName = currentFilePath.split('/').last;
                     return Container(
                       //height: MediaQuery.of(context).size.height * 0.15,
-                      padding:  EdgeInsets.all(10.w),
+                      padding: EdgeInsets.all(10.w),
                       margin: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.01,
                         horizontal: MediaQuery.of(context).size.width * 0.01,
@@ -104,16 +104,12 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                             children: [
                               IconButton(
                                 onPressed: () {
-
-                                   Navigator.push(
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PDFViewer(
-                                                  path: currentFilePath,
+                                                path: currentFilePath,
                                               )));
-                                  
-                                 
-                                  
                                 },
                                 icon: const Icon(Icons.picture_as_pdf_rounded),
                               ),
@@ -121,14 +117,12 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                 width: 10.w,
                               ),
                               InkWell(
-                                onTap: (){
-                                 
-
-                                   Navigator.push(
+                                onTap: () {
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PDFViewer(
-                                                  path: currentFilePath,
+                                                path: currentFilePath,
                                               )));
                                 },
                                 child: Text(
@@ -153,16 +147,17 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                 //to be implemented
                                 onPressed: () {
                                   deleteDialogBox(context, () {
-                                   // print('delete');
+                                    // print('delete');
 
                                     ref
                                         .read(pdfProvider.notifier)
                                         .deleteFile(currentFilePath);
 
                                     snackbar(context, 'File has been deleted');
+                                    //Navigator.pop(context);
                                   });
                                 },
-                                icon:  Icon(
+                                icon: Icon(
                                   Icons.delete_forever_rounded,
                                   size: 25.sp,
                                 ),
@@ -173,10 +168,10 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                               ),
                               IconButton(
                                 //to be implemented
-                                onPressed: (){
+                                onPressed: () {
                                   sharePDFFile(currentFilePath);
                                 },
-                                icon:  Icon(
+                                icon: Icon(
                                   Icons.share_rounded,
                                   size: 23.sp,
                                 ),
@@ -188,7 +183,6 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                               IconButton(
                                 //rename file
                                 onPressed: () {
-                                 
                                   showCustomDialog(
                                       context,
                                       index,

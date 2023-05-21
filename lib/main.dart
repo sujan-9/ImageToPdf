@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //import 'package:imagetopdf/core/permission.dart';
 import 'feature/bottombar/bootombar.dart';
+import 'feature/splashPage/splashscreen.dart';
 //import 'feature/selectimage/selectview.dart';
 //import 'feature/homepage/homescreen.dart';
 
@@ -32,9 +33,10 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
                 .copyWith(background: Color.fromRGBO(255, 255, 255, 0.865)),
           ),
-          //home:   DialogBox(),
+          //home:   const SplashScreen(),
 
-          home: const BottomBar()),
+          home: const BottomBar(),
+      ),
     );
   }
 }

@@ -293,3 +293,13 @@ snackbarmenu(
   );
 }
 
+//Loading indicator
+
+loader(BuildContext context, ){
+  return const Center(
+    child: CircularProgressIndicator(
+      backgroundColor: Colors.transparent,
+      color: Color.fromARGB(255, 199, 28, 16),
+    ),
+  );
+}

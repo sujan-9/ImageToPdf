@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
 
+import '../../core/provider.dart';
 import '../../widgets/widgets.dart';
 import '../bottombar/bootombar.dart';
 import '../preview/preview.dart';
@@ -35,6 +36,8 @@ class EditScreen extends ConsumerWidget {
         openAppSettings();
       }
     }
+   // bool isSaving = false;
+   // final isSaving = ref.watch(isSavingProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -77,16 +80,18 @@ class EditScreen extends ConsumerWidget {
               ),
             ),
             TextButton(
-              onPressed: () {
-                pdf();
-                if (pdf.toString().isNotEmpty) {
+              onPressed: () async{
+                
+                await pdf();
+                
+                  // ignore: use_build_context_synchronously
                   snackbar(context, 'Pdf has beed saved');
-                  const Duration(seconds: 2);
-                }
-
+                  const Duration(seconds: 2,);
+                  
+                // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const BottomBar()));
-                //Navigator.pop(context);
+                ref.read(imgNotifierProvider.notifier).removeAllImages();
               },
               child:  Text(
                 "Save",

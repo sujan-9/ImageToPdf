@@ -1,7 +1,10 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:imagetopdf/feature/bottombar/provider.dart';
 import 'package:imagetopdf/feature/homepage/homescreen.dart';
+import 'package:imagetopdf/widgets/widgets.dart';
 
 import '../selectimage/selectview.dart';
 import '../setting/lpdf_list.dart';
@@ -19,6 +22,10 @@ class BottomBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var navindex = ref.watch(navProvider).index;
+    // Timer(Duration(seconds: 2), () {
+    //   // After 3 seconds, navigate to the main screen
+    //   snackbar(context, 'Loading Wait...');
+    // });
     
     return Scaffold(
       body: _widgetOptions.elementAt(navindex),

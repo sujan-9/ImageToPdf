@@ -80,7 +80,7 @@ class _HomepageState extends ConsumerState<Homepage> {
   Widget build(BuildContext context) {
    
     DateTime? currentBackPressTime;
-   Future<bool> _exitApp(BuildContext context) async {
+   Future<bool> exitApp(BuildContext context) async {
     // Check if the back button is pressed twice within 2 seconds
     if (currentBackPressTime == null ||
         DateTime.now().difference(currentBackPressTime!) > const Duration(seconds: 2)) {
@@ -98,12 +98,9 @@ class _HomepageState extends ConsumerState<Homepage> {
       return true; // Let the app close
     }
   }
-  // final height = MediaQuery.of(context).size.height;
-  // final width = MediaQuery.of(context).size.width;
-  // print(height);
-  // print(width);
+  
     return  WillPopScope(
-      onWillPop: () async => _exitApp(context),
+      onWillPop: () async => exitApp(context),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(

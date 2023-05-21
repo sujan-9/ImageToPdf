@@ -50,6 +50,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^21.2.5
   share_plus: ^7.0.1
   flutter_screenutil: ^5.7.0
+  motion_toast: ^2.6.8
   
   
 
