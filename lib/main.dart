@@ -11,8 +11,16 @@ import 'feature/splashPage/splashscreen.dart';
 //import 'feature/homepage/homescreen.dart';
 
 void main() async {
+ // var devices = <String>[];
   WidgetsFlutterBinding.ensureInitialized();
-  //MobileAds.instance.initialize();
+ // await MobileAds.instance.initialize();
+  // RequestConfiguration configuration = RequestConfiguration(
+  //     testDeviceIds: devices..add('your device id'),
+  // );
+
+
+
+
   await ScreenUtil.ensureScreenSize();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

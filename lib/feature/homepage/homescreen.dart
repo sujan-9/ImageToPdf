@@ -84,10 +84,12 @@ class _HomepageState extends ConsumerState<Homepage> {
 
   // BannerAd? _bannerAd;
   // bool _isLoaded = false;
+  // var adsId = 'ca-app-pub-3940256099942544/6300978111';
 
   // void loadAd() {
   //   _bannerAd = BannerAd(
-  //     adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+  //     adUnitId: adsId,
+      
   //     request: const AdRequest(),
   //     size: AdSize.banner,
   //     listener: BannerAdListener(
@@ -99,8 +101,9 @@ class _HomepageState extends ConsumerState<Homepage> {
   //         });
   //       },
   //       // Called when an ad request failed.
-  //       onAdFailedToLoad: (ad, err) {
-  //         debugPrint('BannerAd failed to load: $err');
+  //       onAdFailedToLoad: (ad, error) {
+  //         debugPrint('BannerAd failed to load: $error');
+  //         print(error.toString());
   //         // Dispose the ad here to free resources.
   //         ad.dispose();
   //       },
@@ -150,7 +153,7 @@ class _HomepageState extends ConsumerState<Homepage> {
         child: Scaffold(
           appBar: AppBar(
            // leading: const Text(''),
-           backgroundColor: Color.fromARGB(255, 247, 245, 245),
+           backgroundColor:const Color.fromARGB(255, 247, 245, 245),
             centerTitle: true,
             elevation: 1,
              automaticallyImplyLeading: false,
@@ -169,20 +172,20 @@ class _HomepageState extends ConsumerState<Homepage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-               // SizedBox(
-                  // height: 40,
-                  // child:
-                //    _isLoaded
-                //       ? Align(
-                //           alignment: Alignment.bottomCenter,
-                //           child: SizedBox(
-                //             width: _bannerAd!.size.width.toDouble(),
-                //             height: _bannerAd!.size.height.toDouble(),
-                //             child: AdWidget(ad: _bannerAd!),
-                //           ),
-                //         )
-                //       : null,
-                // ),
+              //  SizedBox(
+              //     height: 120,
+              //     child:
+              //      _isLoaded
+              //         ? Align(
+              //             alignment: Alignment.bottomCenter,
+              //             child: SizedBox(
+              //               width: _bannerAd!.size.width.toDouble(),
+              //               height: _bannerAd!.size.height.toDouble(),
+              //               child: AdWidget(ad: _bannerAd!),
+              //             ),
+              //           )
+              //         : const Text('ADS failed to load'),
+              //   ),
                 Center(
                     child: Text(
                   "Image",
@@ -228,7 +231,7 @@ class _HomepageState extends ConsumerState<Homepage> {
                       child: Text(
                         'Select Images',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                         ),

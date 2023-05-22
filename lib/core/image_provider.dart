@@ -8,7 +8,6 @@ import '../model/image_model.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-
 final imgNotifierProvider =
     StateNotifierProvider<ImgNotifier, List<ImageModel>>(
   (ref) => ImgNotifier(),
@@ -37,7 +36,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         }
 
         state = [...state, ...selectedImages];
-       // selectedImages.clear();
+        // selectedImages.clear();
       } catch (e) {
         throw ('Error picking images: $e');
       }
@@ -62,8 +61,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         }
 
         state = [...state, ...selectedImages];
-       // selectedImages.clear();
-       
+        // selectedImages.clear();
       } catch (e) {
         throw ('Error picking images: $e');
       }
@@ -86,7 +84,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       }
 
       state = [...state, ...selectedImages];
-     // selectedImages.clear();
+      // selectedImages.clear();
     } catch (e) {
       throw ('Error picking images: $e');
     }
@@ -106,7 +104,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         final image = ImageModel(file.path, name, file);
         selectedImages.add(image);
         state = [...state, ...selectedImages];
-       // selectedImages.clear(); 
+        // selectedImages.clear();
       }
     } catch (e) {
       print(e.toString());
@@ -134,17 +132,13 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
   }
 
   Future<void> createPdf() async {
-  
-   
-
     PdfModel path = PdfModel();
     final status = await Permission.storage.request();
 
     if (status.isGranted) {
-      
       if (state.isEmpty) {
         print('emtpy');
-         print(selectedImages.length);
+        print(selectedImages.length);
         return;
       }
 
@@ -156,18 +150,14 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         //compression
         // Compress the image
         final tempDir = await path_provider.getTemporaryDirectory();
-      final compressedFile = await FlutterImageCompress.compressAndGetFile(
-        imageFile.path,
-        '${tempDir.path}/${image.name}', // Provide a temporary path for the compressed image
-        quality: 75, // Adjust the quality as needed
-      );
+        final compressedFile = await FlutterImageCompress.compressAndGetFile(
+          imageFile.path,
+          '${tempDir.path}/${image.name}', // Provide a temporary path for the compressed image
+          quality: 70, // Adjust the quality as needed
+        );
 
-      final bytes = await compressedFile!.readAsBytes();
-      final imageProvider = pw.MemoryImage(bytes);
-
-
-
-
+        final bytes = await compressedFile!.readAsBytes();
+        final imageProvider = pw.MemoryImage(bytes);
 
         // final bytes = await imageFile.readAsBytes();
         // final imageProvider = pw.MemoryImage(bytes);

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -302,4 +304,71 @@ loader(BuildContext context, ){
       color: Color.fromARGB(255, 199, 28, 16),
     ),
   );
+}
+
+//show dialog after pdf is generated
+
+showDialogPDF(
+  BuildContext context,
+  String filename,
+ Void Function() open,
+ Void Function() share,
+ 
+
+  // void Function() clearImages,
+  // void Function() reorderImages,
+  // String message,
+){
+   showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ListBody(
+              children:  <Widget>[
+                Text(
+                  'Pdf has been saved',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 10.h,),
+                Text(
+                  filename,
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child:  Text('Open',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                  )),
+              onPressed: () {
+                open();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child:  Text('Share',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                  )),
+              onPressed: () {
+                share();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+
+      });
 }

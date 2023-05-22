@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:imagetopdf/feature/ReorderPage/reorder.dart';
+import 'package:imagetopdf/feature/bottombar/provider.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
@@ -114,6 +115,7 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                 
                 
                 snackbar(context, 'Generating PDF wait...');
+                ref.read(navProvider.notifier).changeIndex(1);
                 Timer(const Duration(seconds: 3), () {
                   
                   snackbar(context, 'Pdf has beed saved');
