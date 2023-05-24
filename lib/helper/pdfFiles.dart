@@ -83,3 +83,18 @@ void renamePdf(String oldFilePath, String newFileName) {
     }
   }
 }
+
+
+//get file size
+
+ getFileSize(String path) async {
+    final fileBytes =  await File(path).readAsBytes();
+     final fileSizeInKB = fileBytes.length / (1024);
+   final fileSizeInMB = fileSizeInKB / 1000;
+
+   if (fileSizeInMB > 1) {
+     return fileSizeInMB.toInt();
+   }
+ 
+   return fileSizeInKB.toInt(); 
+  }

@@ -21,19 +21,23 @@ class _HomepageState extends ConsumerState<Homepage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
+           backgroundColor: Colors.white,
           content: Column(
+           
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Chosse one option',
+              Text(
+                'Choose one option',
                 style: TextStyle(
-                  fontSize: 15,
-                  //fontWeight: FontWeight.bold,
+                  fontSize: 20.sp,
+                  color: Colors.red,
+                  letterSpacing: 0.5.sp,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                height: 20,
+               SizedBox(
+                height: 30.h,
               ),
               TextButton(
                 onPressed: () {
@@ -43,14 +47,21 @@ class _HomepageState extends ConsumerState<Homepage> {
                       MaterialPageRoute(
                           builder: (context) => const EditScreen()));
                 },
-                child: const Text(
+
+                 
+                  
+
+                child:  Text(
                   'Camera',
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp,
+                    color: Colors.red,
+                    letterSpacing: 0.5.sp,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
+              SizedBox(height: 10.h,),
               TextButton(
                 onPressed: () {
                   ref
@@ -61,11 +72,13 @@ class _HomepageState extends ConsumerState<Homepage> {
                       MaterialPageRoute(
                           builder: (context) => const EditScreen()));
                 },
-                child: const Text(
+                child:  Text(
                   'Gallery',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                 style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Colors.red,
+                    letterSpacing: 0.5.sp,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -74,7 +87,14 @@ class _HomepageState extends ConsumerState<Homepage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Close'),
+              child:  Text('Close',
+              style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Colors.red,
+                    letterSpacing: 0.5.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+              ),
             ),
           ],
         );

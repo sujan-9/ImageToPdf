@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +30,9 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Delay the execution of getFiles using addPostFrameCallback
-      ref.read(pdfProvider.notifier).getFiles();
+    ref.read(pdfProvider.notifier).getFiles();
+   
+       
       //ref.read(renameFileSProvider);
     });
   }
@@ -38,9 +43,11 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
     super.dispose();
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
-    final filename = ref.watch(pdfProvider);
+    // final filename = ref.watch(pdfProvider);
 
     final filePaths = ref.watch(pdfProvider);
 
@@ -66,14 +73,15 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
       body: filePaths.isEmpty
           ? Center(
               child: Text(
-              'Nothing to show',
-              style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.w600),
-            ))
+                'Nothing to show',
+                style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.w600),
+              ),
+            )
           // RichText(
           //   text: InlineSpan,
           // )
           : Padding(
-              padding: EdgeInsets.all(20.0.w),
+              padding: EdgeInsets.all(22.0.w),
               child: ListView.builder(
                   itemCount: filePaths.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -81,9 +89,13 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                     // String currentFilePath = filePaths.elementAt(reversedIndex);
                     String currentFilePath = filePaths.elementAt(index);
                     String currentFileName = currentFilePath.split('/').last;
+                    var filesize = File(currentFilePath).lengthSync();
+                    var filesizeInKB = filesize / 1000;
+                    var filesizeInMB = filesizeInKB / 1000;
+                    
                     return Container(
                       //height: MediaQuery.of(context).size.height * 0.15,
-                      padding: EdgeInsets.all(10.w),
+                      padding:const EdgeInsets.fromLTRB(4, 6, 5, 5),
                       margin: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.01,
                         horizontal: MediaQuery.of(context).size.width * 0.01,
@@ -124,6 +136,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                               ),
                               InkWell(
                                 onTap: () {
+                                  
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -152,6 +165,7 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                               IconButton(
                                 //to be implemented
                                 onPressed: () {
+                                 // _getFileSize(currentFilePath);
                                   deleteDialogBox(context, () {
                                     // print('delete');
 
@@ -208,6 +222,30 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                   backgroundColor: Colors.white,
                                 ),
                               ),
+                              // SizedBox(
+                              //   width: 5.w,
+                              // ),
+                              if(filesizeInMB < 1)
+                                Text(
+                                   
+                                   '${filesizeInKB.toStringAsFixed(2)} KB',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold,
+                                   // color: Colors.red,
+                                  ),
+                                ),
+                               if (filesizeInMB > 1)
+                                Text(
+                                   
+                                   '${filesizeInMB.toStringAsFixed(2)} MB',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold,
+                                   // color: Colors.red,
+                                  ),
+                                ),
+                              
                             ],
                           ),
                         ],

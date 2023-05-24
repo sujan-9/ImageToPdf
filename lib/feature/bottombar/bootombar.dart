@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:imagetopdf/feature/bottombar/provider.dart';
 import 'package:imagetopdf/feature/homepage/homescreen.dart';
 
@@ -81,8 +82,16 @@ class BottomBar extends ConsumerWidget {
               curve: Curves.ease,
             );
           },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          items:  [
+            BottomNavigationBarItem(icon: Icon(Icons.home,
+            size: 30.sp,
+            
+            ), label: 'Home',
+            
+            ),
+
+
+
             BottomNavigationBarItem(icon: Icon(Icons.picture_as_pdf_rounded), label: 'pdf'),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
           ],
