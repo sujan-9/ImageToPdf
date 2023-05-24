@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import '../helper/folderser.dart';
+import '../helper/imageCompress.dart';
 import '../model/image_model.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -32,11 +33,18 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         if (pickedFile != null) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
-          selectedImages.add(ImageModel(file.path, name, file));
+
+          // final compressedFile = await compressCameraImage(file);
+           final compressedFile = await compressFile(file: file);
+          selectedImages
+              .add(ImageModel(compressedFile.path, name, compressedFile));
+          
+
+          // selectedImages.add(ImageModel(file.path, name, file));
         }
 
         state = [...state, ...selectedImages];
-        // selectedImages.clear();
+        selectedImages.clear();
       } catch (e) {
         throw ('Error picking images: $e');
       }
@@ -57,11 +65,15 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
         for (var pickedFile in pickedFiles) {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
-          selectedImages.add(ImageModel(file.path, name, file));
+          final compressImage = await compressGalleryImages(file, name);
+          selectedImages
+              .add(ImageModel(compressImage, name, File(compressImage)));
+
+          // selectedImages.add(ImageModel(file.path, name, file));
         }
 
         state = [...state, ...selectedImages];
-        // selectedImages.clear();
+        selectedImages.clear();
       } catch (e) {
         throw ('Error picking images: $e');
       }
@@ -79,12 +91,17 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       for (var pickedFile in pickedFiles) {
         final file = File(pickedFile.path);
         final name = pickedFile.name;
-        final image = ImageModel(file.path, name, file);
-        selectedImages.add(image);
+
+        final compressImage = await compressGalleryImages(file, name);
+        selectedImages
+            .add(ImageModel(compressImage, name, File(compressImage)));
+
+        // final image = ImageModel(file.path, name, file);
+        // selectedImages.add(image);
       }
 
       state = [...state, ...selectedImages];
-      // selectedImages.clear();
+      selectedImages.clear();
     } catch (e) {
       throw ('Error picking images: $e');
     }
@@ -101,10 +118,17 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       if (pickedFile != null) {
         final file = File(pickedFile.path);
         final name = pickedFile.name;
-        final image = ImageModel(file.path, name, file);
-        selectedImages.add(image);
+
+
+        // final image = ImageModel(file.path, name, file);
+        // selectedImages.add(image);
+
+         //compressing images
+         final compressedFile = await compressFile(file: file);
+          selectedImages
+              .add(ImageModel(compressedFile.path, name, compressedFile));
         state = [...state, ...selectedImages];
-        // selectedImages.clear();
+        selectedImages.clear();
       }
     } catch (e) {
       print(e.toString());
@@ -137,8 +161,6 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
     if (status.isGranted) {
       if (state.isEmpty) {
-        print('emtpy');
-        print(selectedImages.length);
         return;
       }
 
@@ -147,20 +169,10 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       for (var image in state) {
         final imageFile = File(image.path);
 
-        //compression
-        // Compress the image
-        final tempDir = await path_provider.getTemporaryDirectory();
-        final compressedFile = await FlutterImageCompress.compressAndGetFile(
-          imageFile.path,
-          '${tempDir.path}/${image.name}', // Provide a temporary path for the compressed image
-          quality: 70, // Adjust the quality as needed
-        );
+        //for file compression to do
 
-        final bytes = await compressedFile!.readAsBytes();
+        final bytes = await imageFile.readAsBytes();
         final imageProvider = pw.MemoryImage(bytes);
-
-        // final bytes = await imageFile.readAsBytes();
-        // final imageProvider = pw.MemoryImage(bytes);
 
         pdf.addPage(
           pw.Page(

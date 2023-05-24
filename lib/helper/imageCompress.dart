@@ -1,38 +1,43 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:path_provider/path_provider.dart';
 
 
 
 
-//   Future<File> compressFile({required File? file}) async {
-//   if (file == null) {
-//     throw ArgumentError('File must not be null');
-//   }
 
-//   final filePath = file.path;
+//compress images function for images taken from camera
+ Future<File> compressFile({required File? file}) async {
+      final filePath = file!.path;
+    
+      // Create output file path
+      // eg:- "Volume/VM/abcd_out.jpeg"
+      final lastIndex = filePath.lastIndexOf(RegExp(r'.jp'));
+      final splitted = filePath.substring(0, (lastIndex));
+      final outPath = '${splitted}_out${filePath.substring(lastIndex)}';
+      var result = await FlutterImageCompress.compressAndGetFile(
+        file.path,
+        outPath,
+        quality: 80,
+      );
+      final compfile =File(result!.path);
+      return compfile;
+    }
 
-//   // Create output file path
-//   // eg:- "Volume/VM/abcd_out.jpeg"
-//   // print(filePath);
-//   // final lastIndex = filePath.lastIndexOf(RegExp(r'.jpg|.jpeg|.png'));
-//   // print(lastIndex);
-//   // final splitted = filePath.substring(0, lastIndex);
-//   // print(splitted);
-//   // final outPath = '${splitted}_out${filePath.substring(lastIndex)}';
-//   // print(outPath);
 
-//   final result = await FlutterImageCompress.compressAndGetFile(
-//     file.path,
-//     file.path,
-//     quality: 70,
-//   );
-// print(result);
-//   if (result == null) {
-//     throw Exception('Failed to compress image');
-//   }
+ //compress images function for images taken from gallery
+    Future<String> compressGalleryImages(File file, String name) async {
+  final directory = await getTemporaryDirectory();
+  final targetPath = "${directory.path}/$name";
 
-//    File filepath = File(result.path);
-//    print(filepath);
-//      return filepath;
-// }
+  final compressedFile = await FlutterImageCompress.compressAndGetFile(
+    file.path,
+    targetPath,
+    quality: 80, // Adjust the quality value as desired
+  );
+
+  return compressedFile?.path ?? '';
+}

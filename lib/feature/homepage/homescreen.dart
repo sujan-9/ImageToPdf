@@ -126,119 +126,97 @@ class _HomepageState extends ConsumerState<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime? currentBackPressTime;
-    Future<bool> exitApp(BuildContext context) async {
-      // Check if the back button is pressed twice within 2 seconds
-      if (currentBackPressTime == null ||
-          DateTime.now().difference(currentBackPressTime!) >
-              const Duration(seconds: 2)) {
-        // First back press, show a message
-        currentBackPressTime = DateTime.now();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Press back again to exit'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-        return false; // Prevent the app from closing
-      } else {
-        // Second back press within 2 seconds, exit the app
-        return true; // Let the app close
-      }
-    }
+    
 
-    return WillPopScope(
-      onWillPop: () async => exitApp(context),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-           // leading: const Text(''),
-           backgroundColor:const Color.fromARGB(255, 247, 245, 245),
-            centerTitle: true,
-            elevation: 1,
-             automaticallyImplyLeading: false,
-            title: titletext(
-              'PDF Maker',
-              
-            ),
-            shape: Border(
-            bottom: BorderSide(
-              color: Colors.red,
-              width: 1.8.w,
-            ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+         // leading: const Text(''),
+         backgroundColor:const Color.fromARGB(255, 247, 245, 245),
+          centerTitle: true,
+          elevation: 1,
+           automaticallyImplyLeading: false,
+          title: titletext(
+            'PDF Maker',
+            
           ),
+          shape: Border(
+          bottom: BorderSide(
+            color: Colors.red,
+            width: 1.8.w,
           ),
-          body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-              //  SizedBox(
-              //     height: 120,
-              //     child:
-              //      _isLoaded
-              //         ? Align(
-              //             alignment: Alignment.bottomCenter,
-              //             child: SizedBox(
-              //               width: _bannerAd!.size.width.toDouble(),
-              //               height: _bannerAd!.size.height.toDouble(),
-              //               child: AdWidget(ad: _bannerAd!),
-              //             ),
-              //           )
-              //         : const Text('ADS failed to load'),
-              //   ),
-                Center(
-                    child: Text(
-                  "Image",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )),
-                Text(
-                  "No image is Selected",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  "Select an image to start editing",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                SizedBox(
-                  width: 200.w,
-                  child: TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.red),
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0).r,
-                                  side:
-                                      const BorderSide(color: Colors.purple)))),
-                      onPressed: () {
-                        _showDialog();
-                      },
-                      child: Text(
-                        'Select Images',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                )
-              ]),
         ),
+        ),
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+            //  SizedBox(
+            //     height: 120,
+            //     child:
+            //      _isLoaded
+            //         ? Align(
+            //             alignment: Alignment.bottomCenter,
+            //             child: SizedBox(
+            //               width: _bannerAd!.size.width.toDouble(),
+            //               height: _bannerAd!.size.height.toDouble(),
+            //               child: AdWidget(ad: _bannerAd!),
+            //             ),
+            //           )
+            //         : const Text('ADS failed to load'),
+            //   ),
+              Center(
+                  child: Text(
+                "Image",
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              )),
+              Text(
+                "No image is Selected",
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                "Select an image to start editing",
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              SizedBox(
+                width: 200.w,
+                child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0).r,
+                                side:
+                                    const BorderSide(color: Colors.purple)))),
+                    onPressed: () {
+                      _showDialog();
+                    },
+                    child: Text(
+                      'Select Images',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+              )
+            ]),
       ),
     );
   }

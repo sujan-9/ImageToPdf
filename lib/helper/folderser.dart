@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -16,10 +17,14 @@ final filenameProvider = StateProvider<String>((ref) => PdfModel().file());
 class PdfModel {
 
   
-  String file (){
-   
-  String  name ='PDF-File${Random().nextInt(100)}';
  
+  String file (){
+   // DateTime now = DateTime.now();
+//String  name ='PDF-File${now.hour}:${now.minute}:${now.second}}';
+ DateTime now = DateTime.now();
+    String time = DateFormat('hh_mm_ss').format(now);
+    String name = 'PDF-File$time';
+// String name = 'PDF-File${Random().nextInt(100)}';
     return name;
 
   }

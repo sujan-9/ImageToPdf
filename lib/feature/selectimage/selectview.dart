@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../config/constant/text.dart';
 import '../../helper/pdfFiles.dart';
 import '../../helper/sharePDF.dart';
+
 import '../../widgets/widgets.dart';
 import '../pdfviewer.dart';
 
@@ -75,13 +76,11 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
               padding: EdgeInsets.all(20.0.w),
               child: ListView.builder(
                   itemCount: filePaths.length,
-                  reverse: (filePaths.length > 3) ?true : false,
-                  
                   itemBuilder: (BuildContext context, int index) {
-                    int reversedIndex = filePaths.length - 1 - index;
-                    String currentFilePath = filePaths.elementAt(reversedIndex);
-                    // String currentFilePath = filePaths.elementAt(index);
-                    // String currentFileName = currentFilePath.split('/').last;
+                    // int reversedIndex = filePaths.length - 1 - index;
+                    // String currentFilePath = filePaths.elementAt(reversedIndex);
+                    String currentFilePath = filePaths.elementAt(index);
+                    String currentFileName = currentFilePath.split('/').last;
                     return Container(
                       //height: MediaQuery.of(context).size.height * 0.15,
                       padding: EdgeInsets.all(10.w),
@@ -133,9 +132,9 @@ class _SelectSourceState extends ConsumerState<SelectSource> {
                                               )));
                                 },
                                 child: Text(
-                                  // filePaths.elementAt(index).split('/').last,
-                                  //currentFileName,
-                                  filename.elementAt(index).split('/').last,
+                                  //filePaths.elementAt(index).split('/').last,
+                                  currentFileName,
+
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,

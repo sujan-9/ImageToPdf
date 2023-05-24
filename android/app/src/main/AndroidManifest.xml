@@ -38,9 +38,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-          <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+          <!-- test AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+          <!-- real AdMob app ID: ca-app-pub-6242744325201919~4825581886-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6242744325201919~4825581886"/>   
+            android:value="ca-app-pub-3940256099942544~3347511713"/>   
     </application>
 </manifest>
