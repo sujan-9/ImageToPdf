@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../helper/folderser.dart';
 import '../helper/imageCompress.dart';
 import '../model/image_model.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 final imgNotifierProvider =
@@ -18,6 +18,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
   ImgNotifier() : super([]);
 
   List<ImageModel> selectedImages = [];
+ 
 
   Future<void> pickImagesFromCamera() async {
     final status = await Permission.camera.request();
@@ -34,7 +35,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
           final file = File(pickedFile.path);
           final name = pickedFile.name;
 
-          // final compressedFile = await compressCameraImage(file);
+          
            final compressedFile = await compressFile(file: file);
           selectedImages
               .add(ImageModel(compressedFile.path, name, compressedFile));
@@ -91,7 +92,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       for (var pickedFile in pickedFiles) {
         final file = File(pickedFile.path);
         final name = pickedFile.name;
-
+        
         final compressImage = await compressGalleryImages(file, name);
         selectedImages
             .add(ImageModel(compressImage, name, File(compressImage)));
@@ -178,7 +179,9 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
           pw.Page(
             build: (pw.Context context) {
               return pw.Center(
-                child: pw.Image(imageProvider),
+                child: pw.Image(imageProvider,
+                
+                ),
               );
             },
           ),
@@ -186,7 +189,7 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
       }
 
       var fileName = path.file();
-      var createPath = await path.createFolder("ImageToPdfConverter");
+      var createPath = await path.createFolder("ImageToPDF");
       File savePath = File("$createPath$fileName.pdf");
 
       await savePath.writeAsBytes(await pdf.save());

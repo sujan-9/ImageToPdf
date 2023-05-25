@@ -39,6 +39,8 @@ class _EditScreenState extends ConsumerState<EditScreen> {
   Widget build(BuildContext context) {
     List<File> fileImageArray = [];
     final img = ref.watch(imgNotifierProvider);
+   
+
 
     //pagecontroller
 
@@ -65,6 +67,7 @@ class _EditScreenState extends ConsumerState<EditScreen> {
     }
     // bool isSaving = false;
     // final isSaving = ref.watch(isSavingProvider);
+    
 
     return SafeArea(
       child: Scaffold(
@@ -76,7 +79,10 @@ class _EditScreenState extends ConsumerState<EditScreen> {
               ref.read(imgNotifierProvider.notifier).removeAllImages();
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.arrow_back_ios),
+            icon:  Icon(Icons.arrow_back_ios,
+                color: Colors.red,
+                size: 24.sp,
+            ),
           ),
           actions: [
             TextButton(
@@ -85,8 +91,9 @@ class _EditScreenState extends ConsumerState<EditScreen> {
 
                   ),
               onPressed: () {
-                fileImageArray = img.map((e) => File(e.path)).toList();
-                //fileImageArray = File(img.path).toList
+                if(img.isNotEmpty){
+                  fileImageArray = img.map((e) => File(e.path)).toList();
+                
 
                 Navigator.push(
                     context,
@@ -94,7 +101,10 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                         builder: (context) => PreviewPage(
                               fileImageArray: fileImageArray,
                             )));
-                // Navigator.pop(context);
+                }
+                else{
+                 return; }
+                
               },
               child: Text(
                 "Preview",
@@ -108,9 +118,10 @@ class _EditScreenState extends ConsumerState<EditScreen> {
             ),
             TextButton(
               onPressed: ()  {
-               const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),);
-                 pdf();
+              //  const CircularProgressIndicator(
+              //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),);
+                if(img.isNotEmpty){
+                   pdf();
 
                 
                 
@@ -124,7 +135,10 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                 ref.read(imgNotifierProvider.notifier).removeAllImages();
 
                 });
-               
+                }
+                else{
+                 null;
+                }
               },
               child: Text(
                 "Save",
@@ -143,10 +157,17 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                     () => ref
                         .read(imgNotifierProvider.notifier)
                         .removeAllImages(),
-                    () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ReorderPage())));
+                   (){
+                    if (img.isNotEmpty) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ReorderPage()));
+                    } else {
+                      return;
+                    }
+                   }
+                            );
               },
               icon: Icon(
                 Icons.more_vert_rounded,
@@ -167,9 +188,10 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                 ),
               )
             : Padding(
-                padding: EdgeInsets.fromLTRB(10.w, 50.h, 10.w, 5.h),
+                padding: EdgeInsets.fromLTRB(10.w, 20.h, 10.w, 5.h),
                 child: Column(
                   children: [
+                 
                     Expanded(
                       child: GestureDetector(
                         onHorizontalDragEnd: (details) {
@@ -224,13 +246,20 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                                               size: 40.sp,
                                             ),
                                           ),
-                                        )
+                                        ),
+                                        
+                                     
+                                        
+                                        
                                       ],
                                     ),
                                   ),
                                 )),
                       ),
                     ),
+                    //const  Text('set color',style: TextStyle(color: Colors.white),),
+                     
+                      
                   ],
                 ),
               ),
@@ -252,4 +281,5 @@ class _EditScreenState extends ConsumerState<EditScreen> {
       ),
     );
   }
+ 
 }

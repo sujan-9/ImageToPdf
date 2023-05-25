@@ -31,8 +31,8 @@ class ReorderPage extends ConsumerWidget {
               height: MediaQuery.of(context).size.height * 0.15,
               padding:  EdgeInsets.all(10.w),
               margin: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.01,
-                horizontal: MediaQuery.of(context).size.width * 0.01,
+                vertical: MediaQuery.of(context).size.height * 0.02,
+                horizontal: MediaQuery.of(context).size.width * 0.03,
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -67,7 +67,7 @@ class ReorderPage extends ConsumerWidget {
                     // filePaths.elementAt(index).split('/').last,
                     //currentFileName,
                     img[i].name.length > 10
-                        ? '${img[i].name.substring(0, 20)}...pdf'
+                        ? img[i].name.substring(0, 20).split('/').last
                         : img[i].name,
                     // overflow: TextOverflow.ellipsis,
                     // maxLines: 2,

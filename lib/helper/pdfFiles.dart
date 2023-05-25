@@ -13,7 +13,7 @@ class PDFServices extends StateNotifier<List<String>> {
   PDFServices(List<String> state) : super(state);
 
   void getFiles() {
-    String directory = "storage/emulated/0/ImageToPdfConverter";
+    String directory = "storage/emulated/0/ImageToPDF";
     List<FileSystemEntity> files =
         Directory(directory).listSync(recursive: false);
 
