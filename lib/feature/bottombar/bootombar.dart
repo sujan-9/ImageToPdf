@@ -24,7 +24,7 @@ class BottomBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var navindex = ref.watch(navProvider).index;
-     PageController _pageController = PageController(initialPage: navindex);
+     PageController pageController = PageController(initialPage: navindex);
 
 
     //double pree to exit
@@ -58,7 +58,7 @@ class BottomBar extends ConsumerWidget {
         //_widgetOptions.elementAt(navindex),
 
        PageView.builder(
-          controller: _pageController,
+          controller: pageController,
           itemCount: _widgetOptions.length,
           itemBuilder: (context, index) => _widgetOptions[index],
           onPageChanged: (index) {
@@ -76,7 +76,7 @@ class BottomBar extends ConsumerWidget {
           currentIndex: navindex,
           onTap: (index) {
             ref.read(navProvider.notifier).changeIndex(index);
-            _pageController.animateToPage(
+            pageController.animateToPage(
               index,
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
@@ -92,8 +92,8 @@ class BottomBar extends ConsumerWidget {
 
 
 
-            BottomNavigationBarItem(icon: Icon(Icons.picture_as_pdf_rounded), label: 'pdf'),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+            const BottomNavigationBarItem(icon: Icon(Icons.picture_as_pdf_rounded), label: 'pdf'),
+            const BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
           ],
         )
       ),

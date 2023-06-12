@@ -12,9 +12,10 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/image_provider.dart';
 
-
+import '../../helper/imagecropper.dart';
 import '../../widgets/widgets.dart';
 import '../bottombar/bootombar.dart';
+
 import '../preview/preview.dart';
 
 // ignore: must_be_immutable
@@ -27,7 +28,7 @@ class EditScreen extends ConsumerStatefulWidget {
 
 class _EditScreenState extends ConsumerState<EditScreen> {
   final PageController _pageController = PageController();
-  int _currentPageIndex = 0;
+ int currentPageIndex = 0;
 
   @override
   void dispose() {
@@ -39,18 +40,17 @@ class _EditScreenState extends ConsumerState<EditScreen> {
   Widget build(BuildContext context) {
     List<File> fileImageArray = [];
     final img = ref.watch(imgNotifierProvider);
-   
-
 
     //pagecontroller
 
     void scrollToNextImage() {
-      if (_currentPageIndex < img.length - 1) {
+      if (currentPageIndex < img.length - 1) {
         _pageController.animateToPage(
-          _currentPageIndex + 1,
+          currentPageIndex + 1,
           duration: const Duration(
               milliseconds: 300), // Replace with the desired animation duration
-          curve: Curves.elasticInOut, // Replace with the desired animation curve
+          curve:
+              Curves.elasticInOut, // Replace with the desired animation curve
         );
       }
     }
@@ -67,8 +67,8 @@ class _EditScreenState extends ConsumerState<EditScreen> {
     }
     // bool isSaving = false;
     // final isSaving = ref.watch(isSavingProvider);
-    
 
+    Cropper cropeimage = Cropper();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black38,
@@ -79,9 +79,10 @@ class _EditScreenState extends ConsumerState<EditScreen> {
               ref.read(imgNotifierProvider.notifier).removeAllImages();
               Navigator.pop(context);
             },
-            icon:  Icon(Icons.arrow_back_ios,
-                color: Colors.red,
-                size: 24.sp,
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.red,
+              size: 24.sp,
             ),
           ),
           actions: [
@@ -91,20 +92,18 @@ class _EditScreenState extends ConsumerState<EditScreen> {
 
                   ),
               onPressed: () {
-                if(img.isNotEmpty){
+                if (img.isNotEmpty) {
                   fileImageArray = img.map((e) => File(e.path)).toList();
-                
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PreviewPage(
-                              fileImageArray: fileImageArray,
-                            )));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PreviewPage(
+                                fileImageArray: fileImageArray,
+                              )));
+                } else {
+                  return;
                 }
-                else{
-                 return; }
-                
               },
               child: Text(
                 "Preview",
@@ -117,27 +116,25 @@ class _EditScreenState extends ConsumerState<EditScreen> {
               ),
             ),
             TextButton(
-              onPressed: ()  {
-              //  const CircularProgressIndicator(
-              //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),);
-                if(img.isNotEmpty){
-                   pdf();
+              onPressed: () {
+                //  const CircularProgressIndicator(
+                //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),);
+                if (img.isNotEmpty) {
+                  pdf();
 
-                
-                
-                snackbar(context, 'Generating PDF wait...');
-                ref.read(navProvider.notifier).changeIndex(1);
-                Timer(const Duration(seconds: 3), () {
-                  
-                  snackbar(context, 'Pdf has beed saved');
-                   Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const BottomBar()));
-                ref.read(imgNotifierProvider.notifier).removeAllImages();
-
-                });
-                }
-                else{
-                 null;
+                  snackbar(context, 'Generating PDF wait...');
+                  ref.read(navProvider.notifier).changeIndex(1);
+                  Timer(const Duration(seconds: 3), () {
+                    snackbar(context, 'Pdf has beed saved');
+                    
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const BottomBar()));
+                    ref.read(imgNotifierProvider.notifier).removeAllImages();
+                  });
+                } else {
+                  null;
                 }
               },
               child: Text(
@@ -153,11 +150,10 @@ class _EditScreenState extends ConsumerState<EditScreen> {
             IconButton(
               onPressed: () {
                 snackbarmenu(
-                    context,
-                    () => ref
-                        .read(imgNotifierProvider.notifier)
-                        .removeAllImages(),
-                   (){
+                  context,
+                  () =>
+                      ref.read(imgNotifierProvider.notifier).removeAllImages(),
+                  () {
                     if (img.isNotEmpty) {
                       Navigator.push(
                           context,
@@ -166,8 +162,8 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                     } else {
                       return;
                     }
-                   }
-                            );
+                  },
+                );
               },
               icon: Icon(
                 Icons.more_vert_rounded,
@@ -191,7 +187,6 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                 padding: EdgeInsets.fromLTRB(10.w, 20.h, 10.w, 5.h),
                 child: Column(
                   children: [
-                 
                     Expanded(
                       child: GestureDetector(
                         onHorizontalDragEnd: (details) {
@@ -203,7 +198,7 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                             // Implement scrolling to previous image if needed
                           }
                         },
-                        child: ListView.builder(
+                        child: PageView.builder(
                             controller: _pageController,
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
@@ -247,10 +242,46 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                                             ),
                                           ),
                                         ),
-                                        
-                                     
-                                        
-                                        
+
+                                        //crop images
+                                        Positioned(
+                                          top: 2,
+                                          left: 2,
+                                          child: IconButton(
+                                            onPressed: ()async {
+                                              // ref
+                                              //     .read(imgNotifierProvider
+                                              //         .notifier)
+                                              //     .removeImage(img[index]);
+                                              //(img[index].imagefile);
+                                              
+                                                final croppedImage =
+                                                    await cropeimage.cropImage(
+                                                        img[index].imagefile);
+                                                if (croppedImage != null) {
+                                                  ref
+                                                      .read(imgNotifierProvider
+                                                          .notifier)
+                                                      .replaceImage(img[index],
+                                                          croppedImage);
+                                                }
+                                              
+
+                                              // if (img.isNotEmpty) {
+                                              //   Navigator.pushReplacement(
+                                              //       context,
+                                              //       MaterialPageRoute(
+                                              //           builder: (context) =>
+                                              //               CropImagePage(image: img[index].imagefile,)));
+                                              // }
+                                            },
+                                            icon: Icon(
+                                              Icons.crop_16_9_rounded,
+                                              color: Colors.red,
+                                              size: 40.sp,
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -258,8 +289,6 @@ class _EditScreenState extends ConsumerState<EditScreen> {
                       ),
                     ),
                     //const  Text('set color',style: TextStyle(color: Colors.white),),
-                     
-                      
                   ],
                 ),
               ),
@@ -281,5 +310,4 @@ class _EditScreenState extends ConsumerState<EditScreen> {
       ),
     );
   }
- 
 }

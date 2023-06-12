@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
+// ignore: must_be_immutable
 class PDFViewer extends StatefulWidget {
   String path;
   PDFViewer({super.key, required this.path});

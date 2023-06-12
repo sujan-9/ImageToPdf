@@ -5,6 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import '../helper/folderser.dart';
 import '../helper/imageCompress.dart';
+
 import '../model/image_model.dart';
 
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -19,6 +20,19 @@ class ImgNotifier extends StateNotifier<List<ImageModel>> {
 
   List<ImageModel> selectedImages = [];
  
+void replaceImage(ImageModel originalImage, File croppedImage) {
+  final index = state.indexOf(originalImage);
+  if (index != -1) {
+    final updatedImage = ImageModel(croppedImage.path, originalImage.name, croppedImage);
+    state = [
+      ...state.sublist(0, index),
+      updatedImage,
+      ...state.sublist(index + 1),
+    ];
+  }
+}
+
+
 
   Future<void> pickImagesFromCamera() async {
     final status = await Permission.camera.request();

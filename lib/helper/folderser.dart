@@ -25,10 +25,14 @@ class PdfModel {
     String time = DateFormat('hh_mm_ss').format(now);
     String name = 'PDF-File$time';
 // String name = 'PDF-File${Random().nextInt(100)}';
+
     return name;
 
   }
 
+// String pdffile(){
+
+// }
   
 
   Future<String> createFolder(String folderName) async {
